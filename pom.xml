@@ -116,6 +116,11 @@
 			<artifactId>simple-java-mail</artifactId>
 			<version>6.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ssafy.enjoytrip</groupId>
+			<artifactId>kang_chang</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

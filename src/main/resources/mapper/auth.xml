@@ -4,9 +4,73 @@
 
 <mapper namespace="com.ssafy.travelcompass.auth.model.mapper.AuthMapper">
 
-	<select id="getUser" resultType="UserDto">
-		select *
-		from user
-	</select>
+	<resultMap type="emailAuthNumberDto" id="emailAuthNumber">
+		<result column="email_auth_number_id" property="emailAuthNumberId" />
+		<result column="auth_num" property="authNum" />
+	</resultMap>
 	
+
+	<resultMap type="userDto" id="user">
+		<result column="user_id" property="userId" />
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="username" property="username" />
+		<result column="nickname" property="nickname" />
+		<result column="gender" property="gender" />
+		<result column="birthday" property="birthday" />
+		<result column="totalStar" property="totalStar" />
+		<result column="totalStarCount" property="totalStarCount" />
+		<result column="refreshToken" property="totalStarCount" />
+		<result column="profile" property="profile" />
+	</resultMap>
+	
+	<insert id="signUp" parameterType="UserDto">
+        INSERT INTO user (email, password, username, nickname, gender, birthday)
+        VALUES (#{email}, #{password}, #{username}, #{nickname}, #{gender}, #{birthday})
+    </insert>
+    
+    <select id="findByEmail" parameterType="String" resultMap="user">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+    
+    <update id="newPasswordByEmail" parameterType="map">
+        UPDATE users
+        SET password = #{password}
+        WHERE email = #{email}
+    </update>
+    
+    <select id="isEmailExists" parameterType="String" resultType="boolean">
+    	SELECT count(*) as count
+        FROM user
+        WHERE email = #{email}
+    </select>
+    
+    <select id="isNickNameExists" parameterType="String" resultType="boolean">
+    	SELECT count(*) as count
+        FROM user
+        WHERE nickname = #{nickName}
+    </select>
+    
+    <select id="login" parameterType="UserDto" resultMap="user">
+    	SELECT user_id, username
+    	FROM user
+    	WHERE user_id = #{userId} and password = #{password}
+    </select>
+    
+    <!-- user_email_auth_token -->
+    <insert id="insertAuthToken" parameterType="EmailAuthNumberDto" useGeneratedKeys="true" keyProperty="emailAuthNumberId">
+        INSERT INTO email_auth_number (auth_num)
+        VALUES (#{authNum})
+    </insert>
+    
+    <select id="findAuthNumberById" parameterType="int" resultType="string">
+    	SELECT auth_num
+    	FROM email_auth_number
+    	WHERE email_auth_number_id = #{emailAuthNumberId}
+    </select>
+    
+    
+    
 </mapper>
