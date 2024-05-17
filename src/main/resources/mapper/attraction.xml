@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.attraction.model.mapper.AttractionMapper">
+	
+	<resultMap type="SidoDto" id="SidoDto">
+		<result column="sido_code" property="sidoCode"/>
+		<result column="sido_name" property="sidoName"/>
+	</resultMap>
+	
+	<resultMap type="GugunDto" id="GugunDto">
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="gugun_name" property="gugunName"/>
+		<result column="sido_code" property="sidoCode"/>
+	</resultMap>
+	
+	<resultMap type="AttractionInfoDto" id="AttractionInfoDto">
+		<result column="content_id" property="contentId"/>
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="first_image2" property="firstImage2"/>
+		<result column="sido_code" property="sidoCode"/>
+		<result column="gugun_code" property="gugunCode"/>
+	</resultMap>
+	
+	<select id="getSidoList" resultMap="SidoDto">
+		select *
+		from sido
+	</select>
+	
+	<select id="getGugunList" resultMap="GugunDto">
+		select *
+		from gugun
+		where sido_code = #{sidoCode}
+	</select>
+	
+	<select id="getAttractionList" resultMap="AttractionInfoDto">
+		select *
+		from attraction_info
+		where sido_code = #{sidoCode}
+			and gugun_code = #{gugunCode}
+			and title like CONCAT('%', #{keyword}, '%')
+	</select>
+	
+</mapper>
