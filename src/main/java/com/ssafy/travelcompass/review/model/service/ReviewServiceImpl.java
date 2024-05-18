@@ -15,15 +15,8 @@ public class ReviewServiceImpl implements ReviewService {
 	private final ReviewMapper reviewMapper;
 
 	@Override
-	public List<TripReviewDto> getReviewList(String type, String key) {
-		List<TripReviewDto> reviewList = reviewMapper.getReviewList(type, key);
-		
-		for (int i = 0; i < reviewList.size(); i++) {
-			reviewList.get(i).setReviewCommentList(reviewMapper.getReviewCommentList(reviewList.get(i).getTripReviewId()));
-			reviewList.get(i).setReviewImageFileList(reviewMapper.getReviewImageFilList(reviewList.get(i).getTripReviewId()));
-			reviewList.get(i).setReviewLikeList(reviewMapper.getReviewLikeList(reviewList.get(i).getTripReviewId()));
-			reviewList.get(i).setReviewTagList(reviewMapper.getReviewTagList(reviewList.get(i).getTripReviewId()));
-		}
+	public List<TripReviewDto> getReviewList(String searchType, String searchKeyword) {
+		List<TripReviewDto> reviewList = reviewMapper.getReviewList(searchType, searchKeyword);
 		
 		return reviewList;
 	}

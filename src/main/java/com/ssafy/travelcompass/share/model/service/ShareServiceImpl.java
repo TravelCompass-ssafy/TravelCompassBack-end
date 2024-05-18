@@ -17,6 +17,7 @@ public class ShareServiceImpl implements ShareService {
 	@Override
 	public List<TripShareDto> getShareList(String type, String key) {
 		List<TripShareDto> tripShareDto = shareMapper.getTripShareList(type, key);
+		
 		return tripShareDto;
 	}
 }

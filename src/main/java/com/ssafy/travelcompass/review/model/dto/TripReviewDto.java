@@ -9,13 +9,15 @@ import lombok.Data;
 public class TripReviewDto {
 	int tripReviewId;
 	int userId;
-	int contentId;
-	int tripDetailId;
+	int nickname;
+	int attractionTitle;
+	LocalDateTime createdAt;
+	List<String> reviewImageList;
 	String content;
 	int star;
-	LocalDateTime createdAt;
-	List<ReviewCommentDto> reviewCommentList;
-	List<ReviewImageFileDto> reviewImageFileList;
-	List<ReviewLikeDto> reviewLikeList;
-	List<ReviewTagDto> reviewTagList;
+	int likeCount;
+	boolean likeCheck;
+	List<String> reviewTagList;
+	String commentNickname;
+	String commentContent;
 }

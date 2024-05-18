@@ -22,8 +22,8 @@ public class ReviewController {
 	private final ReviewService reviewService;
 	
 	@GetMapping
-	public ResponseEntity<List<TripReviewDto>> getReviewList(@RequestParam("type") String type, @RequestParam("key") String key) {
-		return new ResponseEntity<List<TripReviewDto>>(reviewService.getReviewList(type, key), HttpStatus.OK);
+	public ResponseEntity<List<TripReviewDto>> getReviewList(@RequestParam("search-type") String searchType, @RequestParam("search-keyword") String searchKeyword) {
+		return new ResponseEntity<List<TripReviewDto>>(reviewService.getReviewList(searchType, searchKeyword), HttpStatus.OK);
 	}
 	
 }

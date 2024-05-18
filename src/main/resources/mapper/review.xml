@@ -4,6 +4,65 @@
 
 <mapper namespace="com.ssafy.travelcompass.review.model.mapper.ReviewMapper">
 
+	<resultMap type="TripReviewDto" id="TripReviewDto">
+		<result column="trip_review_id" property="tripReviewId"/>
+		<result column="user_id" property="userId"/>
+		<result column="attraction_title" property="attractionTitle"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="like_count" property="likeCount"/>
+		<result column="comment_nickname" property="commentNickname"/>
+		<result column="comment_content" property="commentContent"/>
+	</resultMap>
+	
+	<select id="getReviewList" resultMap="TripReviewDto">
+		select 
+			r1.trip_review_id, 
+			u1.user_id, 
+			u1.nickname, 
+			a1.title as attraction_title, 
+			r1.create_at, 
+			r1.content, 
+			r1.star, 
+			count(l1.review_like_id) as like_count, 
+			min(c1.nickname) as comment_nickname, 
+			min(c1.content) as comment_content
+		from 
+			trip_review r1
+		join 
+			user u1 on r1.user_id = u1.user_id
+		join 
+			attraction_info a1 on r1.content_id = a1.content_id
+		join 
+			review_like l1 on r1.trip_review_id = l1.trip_review_id
+		join
+			(select *
+			from 
+				review_comment c2
+			join 
+				user u2 on c2.user_id = u2.user_id
+			) c1 on r1.trip_review_id = c1.trip_review_id
+		where 
+			CASE 
+	            WHEN #{searchType} = 'nickname' THEN u1.nickname = #{searchKeyword}
+	            WHEN #{searchType} = 'title' THEN a1.title = #{searchKeyword}
+	            WHEN #{searchType} = 'content' THEN r1.content LIKE '%' || #{searchKeyword} || '%'
+	            ELSE 1 = 1
+        	END
+		group by
+			r1.trip_review_id,
+	        u1.user_id,
+	        u1.nickname,
+	        a1.title,
+	        r1.create_at,
+	        r1.content,
+	        r1.star
+		order by
+			c1.create_at asc
+	</select>
+	
+	
+	
+
 	<resultMap type="ReviewCommentDto" id="ReviewCommentDto">
 		<result column="review_comment_id" property="reviewCommentId"/>
 		<result column="trip_review_id" property="tripReviewId"/>
@@ -28,13 +87,7 @@
 		<result column="trip_review_id" property="tripReviewId"/>
 	</resultMap>
 	
-	<resultMap type="TripReviewDto" id="TripReviewDto">
-		<result column="trip_review_id" property="tripReviewId"/>
-		<result column="user_id" property="userId"/>
-		<result column="content_id" property="contentId"/>
-		<result column="trip_detail_id" property="tripDetailId"/>
-		<result column="created_at" property="createdAt"/>
-	</resultMap>
+
 	
 	<select id="getReviewCommentList" resultMap="TripReviewDto">
 		select *
@@ -60,10 +113,6 @@
 		where trip_review_id = #{tripReviewId}
 	</select>
 	
-	<select id="getReviewList" resultMap="TripReviewDto">
-		select *
-		from trip_review
-		where #{type} = #{key}
-	</select>
+
 	
 </mapper>
