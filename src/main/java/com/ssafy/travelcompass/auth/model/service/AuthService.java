@@ -1,10 +1,9 @@
 package com.ssafy.travelcompass.auth.model.service;
 
-import java.util.Map;
-
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailAuthNumber;
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailVerification;
 import com.ssafy.travelcompass.auth.model.dto.RequestNewPassword;
+import com.ssafy.travelcompass.auth.model.dto.RequestResetPassword;
 import com.ssafy.travelcompass.auth.model.dto.UserDto;
 
 public interface AuthService {
@@ -29,6 +28,10 @@ public interface AuthService {
 	void deleteRefreshToken(int userId) throws Exception;
 
 	Object getRefreshToken(int userId) throws Exception;
+
+	String findEmail(String nickName, String birthDay) throws Exception;
+
+	void resetPassword(RequestResetPassword requestResetPassword) throws Exception;
 
 }
 

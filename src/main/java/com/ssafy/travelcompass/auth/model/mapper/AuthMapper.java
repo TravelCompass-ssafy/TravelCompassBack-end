@@ -33,4 +33,6 @@ public interface AuthMapper {
 	void deleteRefreshToken(Map<String, Object> map) throws SQLException;
 
 	Object getRefreshToken(int userId) throws SQLException;
+
+	String findEmail(Map<String, String> map) throws SQLException;
 }

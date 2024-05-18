@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailAuthNumber;
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailVerification;
 import com.ssafy.travelcompass.auth.model.dto.RequestNewPassword;
+import com.ssafy.travelcompass.auth.model.dto.RequestResetPassword;
 import com.ssafy.travelcompass.auth.model.dto.UserDto;
 import com.ssafy.travelcompass.auth.model.service.AuthService;
 import com.ssafy.travelcompass.util.jwt.JWTUtil;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,8 +63,7 @@ public class AuthController {
 	
 	@GetMapping("/email/verification")
 	public ResponseEntity<?> emailVerify(@ModelAttribute RequestEmailVerification requestEmailVerification) throws Exception {
-		
-		System.out.println(requestEmailVerification.toString());
+		System.out.println("인증 번호:" + requestEmailVerification);
 		authService.emailVerify(requestEmailVerification);
 		
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -173,6 +174,24 @@ public class AuthController {
 		}
 		
 		return ResponseEntity.status(status).body(resultMap);
+	}
+	
+	@GetMapping("/email/find")
+	public ResponseEntity<?> findEmail(@RequestParam("nickName") String nickName, @RequestParam("birthday") String birthDay) throws Exception {
+		
+		String email = authService.findEmail(nickName, birthDay);
+		
+		Map<String, String> resultMap = new HashMap<>();
+		resultMap.put("email", email);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(resultMap);
+	}
+	
+	@PatchMapping("/resetPassword")
+	public ResponseEntity<?> resetPassword(@RequestBody RequestResetPassword requestResetPassword) throws Exception {
+		authService.resetPassword(requestResetPassword);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 }

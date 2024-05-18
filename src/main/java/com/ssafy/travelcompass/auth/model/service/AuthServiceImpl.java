@@ -11,15 +11,14 @@ import com.ssafy.travelcompass.auth.model.dto.EmailAuthNumberDto;
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailAuthNumber;
 import com.ssafy.travelcompass.auth.model.dto.RequestEmailVerification;
 import com.ssafy.travelcompass.auth.model.dto.RequestNewPassword;
+import com.ssafy.travelcompass.auth.model.dto.RequestResetPassword;
 import com.ssafy.travelcompass.auth.model.dto.UserDto;
 import com.ssafy.travelcompass.auth.model.mapper.AuthMapper;
 import com.ssafy.travelcompass.exception.custom.EmailExistsException;
 import com.ssafy.travelcompass.exception.custom.InvalidEmailAuthTokenException;
-import com.ssafy.travelcompass.exception.custom.LoginFailedException;
 import com.ssafy.travelcompass.exception.custom.NickNameExistsException;
 import com.ssafy.travelcompass.exception.custom.UserNotFoundException;
 import com.ssafy.travelcompass.util.encrypt.EncryptHelper;
-import com.ssafy.travelcompass.util.jwt.JWTUtil;
 import com.ssafy.travelcompass.util.mail.MailSender;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
 	private final AuthMapper authMapper;
 	private final MailSender mailSender;
 	private final EncryptHelper encryptHelper;
-	private final JWTUtil jwtUtil;
 
 	@Override
 	public void signUp(UserDto requestSignUp) throws Exception {
@@ -74,8 +72,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public void emailVerify(RequestEmailVerification requestEmailVerification) throws Exception {
 		String authNum = authMapper.findAuthNumberById(requestEmailVerification.getEmailAuthNumberId());
-		System.out.println("authNum," + authNum);
-		System.out.println("2" + requestEmailVerification.getAuthNumber());
+
 		if(authNum == null || !requestEmailVerification.getAuthNumber().equals(authNum)) {
 			throw new InvalidEmailAuthTokenException();
 		}
@@ -132,5 +129,27 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public Object getRefreshToken(int userId) throws Exception {
 		return authMapper.getRefreshToken(userId);
+	}
+
+	@Override
+	public String findEmail(String nickName, String birthDay) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("nickName", nickName);
+		map.put("birthDay", birthDay);
+		return authMapper.findEmail(map);
+	}
+
+	@Override
+	public void resetPassword(RequestResetPassword requestResetPassword) throws Exception {
+		String password = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+        String hashedPwd = encryptHelper.encrypt(password);
+        
+        Map<String, String> param = new HashMap<>();
+        param.put("password", hashedPwd);
+        param.put("email", requestResetPassword.getEmail());
+        
+        authMapper.newPasswordByEmail(param);
+		
+		mailSender.sendNewPassword(requestResetPassword.getEmail(), password);		
 	}
 }
