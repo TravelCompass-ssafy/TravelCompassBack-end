@@ -27,4 +27,10 @@ public interface AuthMapper {
 	UserDto login(UserDto userDto) throws SQLException;
 
 	void saveRefreshToken(Map<String, Object> map) throws SQLException;
+
+	UserDto userInfo(int userId)  throws SQLException;
+
+	void deleteRefreshToken(Map<String, Object> map) throws SQLException;
+
+	Object getRefreshToken(int userId) throws SQLException;
 }

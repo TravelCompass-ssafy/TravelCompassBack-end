@@ -96,26 +96,17 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public Map<String, Object> login(UserDto userDto)throws Exception {
-		Map<String, Object> resultMap = new HashMap<>();
-		userDto.encryptPassword(encryptHelper);
-		UserDto loginUser = authMapper.login(userDto);
-		
-		if(loginUser == null) {
-			throw new LoginFailedException();
+	public UserDto login(UserDto userDto) throws Exception {
+		UserDto result = authMapper.login(userDto);
+		if(encryptHelper.isMatch(userDto.getPassword(), result.getPassword())) {
+			result.setPassword(null);
+			return result;
 		}
 		else {
-			String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
-			String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
-			
-			saveRefreshToken(loginUser.getUserId(), refreshToken);
-			
-			resultMap.put("access-token", accessToken);
-			resultMap.put("refresh-token", refreshToken);
+			return null;
 		}
-		
-		return resultMap;
-	}
+
+	} 
 	
 	@Override
 	public void saveRefreshToken(int userId, String refreshToken) throws Exception {
@@ -123,5 +114,23 @@ public class AuthServiceImpl implements AuthService {
 		map.put("userId", userId);
 		map.put("token", refreshToken);
 		authMapper.saveRefreshToken(map);
-	} 
+	}
+
+	@Override
+	public UserDto userInfo(int userId) throws Exception {
+		return authMapper.userInfo(userId);
+	}
+
+	@Override
+	public void deleteRefreshToken(int userId) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("token", null);
+		authMapper.deleteRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(int userId) throws Exception {
+		return authMapper.getRefreshToken(userId);
+	}
 }

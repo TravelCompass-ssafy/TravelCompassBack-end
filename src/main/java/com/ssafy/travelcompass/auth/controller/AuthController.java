@@ -84,10 +84,95 @@ public class AuthController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody UserDto userDto) throws Exception {		
-		Map<String, Object> tokens = authService.login(userDto);
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			UserDto loginUser = authService.login(userDto);
+			System.out.println(loginUser);
+			if(loginUser != null) {
+				String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+				String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+				
+				System.out.println(accessToken);
+				System.out.println(refreshToken);
+				authService.saveRefreshToken(loginUser.getUserId(), refreshToken);
+				
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);				
+				
+				status = HttpStatus.CREATED;
+			}
+			else {
+				resultMap.put("message", "아이디 또는 패스워드를 확인해 주세요.");
+				status = HttpStatus.UNAUTHORIZED;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(tokens);
+		return ResponseEntity.status(status).body(resultMap);
 	}
 	
+	@GetMapping("/info/{user-id}")
+	public ResponseEntity<?> getInfo(@PathVariable("user-id") int userId, HttpServletRequest request){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		if(jwtUtil.checkToken(request.getHeader("Authorization"))) {
+			try {
+				UserDto userDto = authService.userInfo(userId);
+				resultMap.put("userInfo", userDto);
+				status = HttpStatus.OK;
+			} catch(Exception e) {
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		}
+		else {
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		
+		return ResponseEntity.status(status).body(resultMap);
+	}
+	
+	@GetMapping("/logout/{user-id}")
+	public ResponseEntity<?> removeToken(@PathVariable("user-id") int userId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			authService.deleteRefreshToken(userId);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return ResponseEntity.status(status).body(resultMap);
+	}
+	
+	@PostMapping("/refresh")
+	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		String token = request.getHeader("refreshToken");
+		
+		if(jwtUtil.checkToken(token)) {
+			if(token.equals(authService.getRefreshToken(userDto.getUserId()))) {
+				String newAccessToken = jwtUtil.createAccessToken(userDto.getUserId());
+				resultMap.put("access-token", newAccessToken);
+				status = HttpStatus.CREATED;
+			}
+		}
+		else {
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		
+		return ResponseEntity.status(status).body(resultMap);
+	}
 	
 }

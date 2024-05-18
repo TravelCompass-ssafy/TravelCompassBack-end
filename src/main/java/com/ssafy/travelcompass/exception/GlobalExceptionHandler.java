@@ -33,10 +33,15 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("SQL 에러");
 	}
 
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<?> runtimException(RuntimeException ex) {
+		ex.printStackTrace();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("런타임에러");
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> exception(Exception ex) {
 		ex.printStackTrace();
-		
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버에러");
 	}
 }

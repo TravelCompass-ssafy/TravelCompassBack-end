@@ -19,9 +19,16 @@ public interface AuthService {
 	void isEmailExists(String email) throws Exception;
 
 	void isNickNameExists(String nickName) throws Exception;
-
-	Map<String, Object> login(UserDto userDto) throws Exception;
+	
+	UserDto login(UserDto userDto) throws Exception;
 
 	void saveRefreshToken(int userId, String refreshToken) throws Exception;
+
+	UserDto userInfo(int userId) throws Exception;
+
+	void deleteRefreshToken(int userId) throws Exception;
+
+	Object getRefreshToken(int userId) throws Exception;
+
 }
 

@@ -54,9 +54,33 @@
     </select>
     
     <select id="login" parameterType="UserDto" resultMap="user">
-    	SELECT user_id, username
+    	SELECT user_id, password, username, refresh_token
     	FROM user
-    	WHERE user_id = #{userId} and password = #{password}
+    	WHERE email = #{email}
+    </select>
+    
+    <update id="saveRefreshToken" parameterType="map">
+    	update user
+    	set refresh_token = #{token}
+    	where user_id = #{userId}
+    </update>
+    
+    <select id="userInfo" parameterType="int" resultMap="user">
+    	select user_id, username, email
+    	from user
+    	where user_id = #{userId}
+    </select>
+    
+    <update id="deleteRefreshToken" parameterType="map">
+    	update user
+    	set refresh_token = #{token, jdbcType=VARCHAR}
+    	where user_id = #{userId}
+    </update>
+    
+    <select id="getRefreshToken" parameterType="int" resultType="string">
+    	select refresh_token
+    	from user
+    	where user_id = #{userId}
     </select>
     
     <!-- user_email_auth_token -->
