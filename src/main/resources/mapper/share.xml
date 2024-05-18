@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.share.model.mapper.ShareMapper">
+
+	<resultMap type="TripShareDto" id="TripShareDto">
+		<result column="trip_share_id" property="tripShareId"/>
+		<result column="trip_detail_id" property="tripDetailId"/>
+	</resultMap>
+	
+	<resultMap type="TripShareCommentDto" id="TripShareCommentDto">
+		<result column="trip_share_comment_id" property="tripShareCommentId"/>
+		<result column="trip_share_id" property="tripShareId"/>
+		<result column="parent_share_comment_id" property="parentTripShareCommentId"/>
+		<result column="user_id" property="userId"/>
+		<result column="created_at" property="createdAt"/>
+	</resultMap>
+	
+	<resultMap type="TripShareLikeDto" id="TripShareLikeDto">
+		<result column="trip_share_like_id" property="tripShareLikeId"/>
+		<result column="trip_share_id" property="tripShareId"/>
+		<result column="user_id" property="userId"/>
+	</resultMap>
+	
+	<resultMap type="TripShareTagDto" id="TripShareTagDto">
+		<result column="trip_share_tag_id" property="tripShareTagId"/>
+		<result column="trip_share_id" property="tripShareId"/>
+	</resultMap>
+	
+	<select id="getTripShareList" resultMap="TripShareDto">
+		select *
+		from trip_share s
+		join trip_detail d
+		on s.trip_detail_id = d.trip_detail_id
+		where #{type} = #{key}
+	</select>
+	
+	<select id="getTripShare" resultMap="TripShareDto">
+		select *
+		from trip_share
+		where trip_share_id = #{tripShareId}
+	</select>
+	
+	<select id="getTripShareCommentList" resultMap="TripShareCommentDto">
+		select *
+		from trip_share_comment
+		where trip_share_id = #{tripShareId}
+	</select>
+	
+	<select id="getTripShareLikeList" resultMap="TripShareLikeDto">
+		select *
+		from trip_share_liek
+		where trip_share_id = #{tripShareId}
+	</select>
+	
+	<select id="getTripShareTagList" resultMap="TripShareTagDto">
+		select *
+		from trip_share_tag
+		where trip_share_id = #{tripShareId}
+	</select>
+	
+</mapper>
