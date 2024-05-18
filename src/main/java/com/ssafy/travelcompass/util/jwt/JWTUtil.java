@@ -97,7 +97,7 @@ public class JWTUtil {
 		}
 	}
 	
-	public String getUserId(String authorization) {
+	public int getUserId(String authorization) {
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(authorization);
@@ -107,7 +107,7 @@ public class JWTUtil {
 		}
 		Map<String, Object> value = claims.getBody();
 		log.info("value : {}", value);
-		return (String) value.get("userId");
+		return (int) value.get("userId");
 	}
 
 }

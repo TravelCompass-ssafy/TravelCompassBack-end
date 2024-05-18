@@ -1,8 +1,6 @@
-package com.ssafy.travelcompass.auth.model.dto;
+package com.ssafy.travelcompass.user.model.dto;
 
 import java.time.LocalDate;
-
-import com.ssafy.travelcompass.util.encrypt.EncryptHelper;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserDto {
+public class UserInfoDto {
 	int userId;
 	String email;
 	String password;
@@ -27,8 +25,4 @@ public class UserDto {
 	int totalStarCount;
 	String refreshToken;
 	String profile;
-	
-	public void encryptPassword(EncryptHelper encryptHelper) {
-		this.password = encryptHelper.encrypt(this.password);
-	}
 }

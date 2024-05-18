@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public void isNickNameExists(String nickName) throws Exception {
-		if(!authMapper.isNickNameExists(nickName)) {
+		if(authMapper.isNickNameExists(nickName)) {
 			throw new NickNameExistsException();
 		}
 	}
