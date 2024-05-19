@@ -1,5 +1,6 @@
 package com.ssafy.travelcompass.user.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +74,12 @@ public class UserServiceImpl implements UserService{
 		
 		System.out.println(savePath);
 		return savePath;
+	}
+
+	@Override
+	public UserInfoDto findByUserId(int userId) throws Exception {
+		
+		return userMapper.findUserByUserId(userId);
 	}
 	
 }

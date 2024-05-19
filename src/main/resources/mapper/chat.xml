@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.chat.model.mapper.ChatMapper">
+	<resultMap type="chatDto" id="chat">
+		<result column="trip_detail_chat_id" property="tripDetailChatId" />
+		<result column="trip_detail_id" property="tripDetailId" />
+		<result column="user_id" property="userId" />
+		<result column="message" property="message" />
+		<result column="created_at" property="createdAt" />
+	</resultMap>
+	
+	<insert id="saveChat" parameterType="ChatDto">
+		INSERT INTO trip_detail_chat (trip_detail_id, user_id, message, created_at)
+		VALUES(#{tripDetailId}, #{userId}, #{message}, #{createdAt})
+	</insert>
+</mapper>
