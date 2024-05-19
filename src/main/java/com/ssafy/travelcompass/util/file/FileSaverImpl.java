@@ -48,7 +48,7 @@ public class FileSaverImpl implements FileSaver {
 
 	@Override
 	public void profileRemove(String profilePath) {
-		if(profilePath == null) return;
+		if(profilePath == null || profilePath.equals("/images/profile/basicProfile.jpg")) return;
 		// /images/ 경로 제거
         if (profilePath.startsWith("/images/")) {
         	profilePath = profilePath.substring("/images/".length());

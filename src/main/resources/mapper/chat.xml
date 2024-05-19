@@ -9,10 +9,26 @@
 		<result column="user_id" property="userId" />
 		<result column="message" property="message" />
 		<result column="created_at" property="createdAt" />
+		<result column="nickname" property="nickName"/>
+		<result column="profile" property="profile" />
 	</resultMap>
 	
 	<insert id="saveChat" parameterType="ChatDto">
 		INSERT INTO trip_detail_chat (trip_detail_id, user_id, message, created_at)
 		VALUES(#{tripDetailId}, #{userId}, #{message}, #{createdAt})
 	</insert>
+	
+	<select id="getChatsByTripDetailId" resultMap="chat">
+        SELECT trip_detail_chat_id, trip_detail_id, user_id, message, created_at, nickname, profile
+        FROM trip_detail_chat
+        JOIN user USING(user_id)
+        WHERE trip_detail_id = #{tripDetailId}
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{size}
+    </select>
+    
+    <select id="countChatsByTripDetailId" resultType="int">
+        SELECT COUNT(*) FROM trip_detail_chat
+        WHERE trip_detail_id = #{tripDetailId}
+    </select>
 </mapper>
