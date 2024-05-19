@@ -3,5 +3,19 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.travelcompass.trip.model.mapper.TripMapper">
+	<resultMap type="TripDetailDto" id="TripDetailDto">
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="user_id" property="userId"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="max_capacity" property="maxCapacity"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="sido_code" property="sidoCode"/>
+	</resultMap>
 	
+	<insert id="registTripDetail" parameterType="TripDetailDto">
+		insert into trip_detail
+		(user_id, title, content, start_date, end_date, max_capacity, created_at, sido_code)
+		values (#{userId}, #{title}, #{content}, #{startDate}, #{endDate}, #{maxCapacity}, now(), #{sidoCode})
+	</insert>
 </mapper>
