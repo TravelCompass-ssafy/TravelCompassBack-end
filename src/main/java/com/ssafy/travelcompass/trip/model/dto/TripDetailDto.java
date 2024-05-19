@@ -22,6 +22,6 @@ public class TripDetailDto {
 	LocalDateTime createdAt;
 	int sidoCode;
 	List<String> imageFileList;
-	List<AttractionInfoDto> attractionInfoList;
+	List<List<AttractionInfoDto>> attractionInfoList;
 	List<TripDetailCommentDto> tripDetailCommentList;
 }

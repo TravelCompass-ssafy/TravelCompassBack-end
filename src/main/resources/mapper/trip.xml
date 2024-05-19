@@ -13,9 +13,35 @@
 		<result column="sido_code" property="sidoCode"/>
 	</resultMap>
 	
-	<insert id="registTripDetail" parameterType="TripDetailDto">
+	<resultMap type="TripPlanDto" id="TripPlanDto">
+		<result column="trip_plan_id" property="tripPlanId"/>
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="trip_date" property="tripDate"/>
+	</resultMap>
+
+	<resultMap type="TripActivityDto" id="TripActivityDto">
+		<result column="trip_activity_id" property="tripActivityId"/>
+		<result column="trip_plan_id" property="tripPlanId"/>
+		<result column="content_id" property="contentId"/>
+		<result column="activity_order" property="activityOrder"/>
+	</resultMap>
+	
+	<insert id="registTripDetail" parameterType="TripDetailDto" useGeneratedKeys="true" keyProperty="tripDetailId">
 		insert into trip_detail
 		(user_id, title, content, start_date, end_date, max_capacity, created_at, sido_code)
 		values (#{userId}, #{title}, #{content}, #{startDate}, #{endDate}, #{maxCapacity}, now(), #{sidoCode})
 	</insert>
+	
+	<insert id="registTripDetailPlan" parameterType="TripPlanDto" useGeneratedKeys="true" keyProperty="tripPlanId">
+		insert into trip_plan
+		(trip_detail_id, trip_date)
+		values (#{tripDetailId}, #{tripDate})
+	</insert>
+	
+	<insert id="registTripActivity" parameterType="TripActivityDto">
+		insert into trip_activity
+		(trip_plan_id, content_id, activity_order)
+		values (#{tripPlanId}, #{contentId}, #{activityOrder})
+	</insert>
+	
 </mapper>
