@@ -1,11 +1,16 @@
 package com.ssafy.travelcompass.trip.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
@@ -26,8 +31,9 @@ public class TripController {
 	private final JWTUtil jwtUtil;
 	
 	@GetMapping
-	public ResponseEntity<?> getTripList() {
-		return null;
+	public ResponseEntity<?> getTripList(@RequestParam(required = false) LocalDate date, @RequestParam(required = false) int sidoCode, @RequestParam(required = false) String keyword) {
+		System.out.println(1);
+		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetailList(date, sidoCode, keyword));
 	}
 	
 	@PostMapping

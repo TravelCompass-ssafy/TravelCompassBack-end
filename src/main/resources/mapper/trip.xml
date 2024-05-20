@@ -6,6 +6,9 @@
 	<resultMap type="TripDetailDto" id="TripDetailDto">
 		<result column="trip_detail_id" property="tripDetailId"/>
 		<result column="user_id" property="userId"/>
+		<result column="user_id" property="userId"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="sido_name" property="sidoName"/>
 		<result column="start_date" property="startDate"/>
 		<result column="end_date" property="endDate"/>
 		<result column="max_capacity" property="maxCapacity"/>
@@ -26,6 +29,42 @@
 		<result column="activity_order" property="activityOrder"/>
 	</resultMap>
 	
+	<select id="getTripDetailList" resultMap="TripDetailDto">
+		select 
+			d1.trip_detail_id, 
+			u1.user_id, 
+			d1.image_path,
+			s1.sido_name, 
+			d1.title, 
+			d1.start_date, 
+			d1.end_date,
+			u1.nickname,
+			d1.max_capacity,
+			d1.view,
+			d1.created_at
+		from 
+			trip_detail d1
+		join
+			user u1
+		on
+			d1.user_id = u1.user_id
+		join
+			sido s1
+		on
+			d1.sido_code = s1.sido_code
+		<where>
+	        <if test="date != null">
+	            and d1.start_date &lt;= #{date} and d1.end_date &gt;= #{date}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+	            and d1.title like CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="sidoCode != null and sidoCode != 0">
+	            and s1.sido_code = #{sidoCode}
+	        </if>
+	    </where>
+	</select>
+	
 	<insert id="registTripDetail" parameterType="TripDetailDto" useGeneratedKeys="true" keyProperty="tripDetailId">
 		insert into trip_detail
 		(user_id, title, content, start_date, end_date, max_capacity, created_at, sido_code)
@@ -43,5 +82,7 @@
 		(trip_plan_id, content_id, activity_order)
 		values (#{tripPlanId}, #{contentId}, #{activityOrder})
 	</insert>
+	
+
 	
 </mapper>

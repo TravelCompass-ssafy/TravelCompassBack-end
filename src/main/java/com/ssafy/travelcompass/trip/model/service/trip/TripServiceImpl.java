@@ -1,5 +1,6 @@
 package com.ssafy.travelcompass.trip.model.service.trip;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TripServiceImpl implements TripService {
 	private final TripMapper tripMapper;
+	
+	@Override
+	public List<TripDetailDto> getTripDetailList(LocalDate date, int sidoCode, String keyword) {
+		System.out.println(2);
+		return tripMapper.getTripDetailList(date, sidoCode, keyword);
+	}
 
 	@Override
 	public void registTripDetail(TripDetailDto tripDetailDto) {

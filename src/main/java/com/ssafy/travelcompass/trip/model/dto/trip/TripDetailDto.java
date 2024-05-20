@@ -12,15 +12,19 @@ import lombok.Data;
 public class TripDetailDto {
 	int tripDetailId;
 	int userId;
-	String userNickname;
+
+	String imagePath;
+	String sidoName;
 	String title;
-	String content;
 	LocalDate startDate;
 	LocalDate endDate;
+	String nickname;
 	int maxCapacity;
 	int view;
 	LocalDateTime createdAt;
+
+	String content;
 	int sidoCode;
-	List<String> imageFileList;
+
 	List<List<AttractionInfoDto>> attractionInfoList;
 }
