@@ -9,7 +9,7 @@ import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 @Mapper
 public interface MemberMapper {
 
-	TripDetailMemberDto findByUserId(int userId) throws SQLException;
+	boolean isMemberExistsByUserId(int userId) throws SQLException;
 
 	void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception;
 

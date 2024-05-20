@@ -16,9 +16,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception {
-		TripDetailMemberDto result = memberMapper.findByUserId(tripDetailMemberDto.getUserId());
+		boolean isMemberExists = memberMapper.isMemberExistsByUserId(tripDetailMemberDto.getUserId());
 		
-		if(result != null) {
+		if(isMemberExists) {
 			throw new MemberDuplicationException();
 		}
 		else {

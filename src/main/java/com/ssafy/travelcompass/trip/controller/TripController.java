@@ -12,7 +12,9 @@ import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 import com.ssafy.travelcompass.trip.model.service.member.MemberService;
 import com.ssafy.travelcompass.trip.model.service.trip.TripService;
+import com.ssafy.travelcompass.util.jwt.JWTUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class TripController {
 	private final TripService tripService;
 	private final MemberService memberService;
+	private final JWTUtil jwtUtil;
 	
 	@GetMapping
 	public ResponseEntity<?> getTripList() {
@@ -36,7 +39,10 @@ public class TripController {
 	
 	// Member
 	@PostMapping("/{trip-id}")
-	public ResponseEntity<?> registMember(@RequestBody TripDetailMemberDto tripDetailMemberDto) throws Exception {
+	public ResponseEntity<?> registMember(@RequestBody TripDetailMemberDto tripDetailMemberDto,
+										  HttpServletRequest request) throws Exception {
+		int userId = jwtUtil.getUserId(request.getHeader("Authorization"));
+		tripDetailMemberDto.setUserId(userId);
 		memberService.regist(tripDetailMemberDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).build();
