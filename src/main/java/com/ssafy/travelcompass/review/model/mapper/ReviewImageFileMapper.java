@@ -5,8 +5,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ReviewTagMapper {
+public interface ReviewImageFileMapper {
 
-	void addTag(Map<String, Object> map);
+	void addImageByTripReviewId(Map<String, Object> map) throws Exception;
 
 }

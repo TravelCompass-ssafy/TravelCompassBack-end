@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.travelcompass.review.model.mapper.ReviewMapper;
+import com.ssafy.travelcompass.review.model.mapper.ReviewTagMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReviewTagServiceImpl implements ReviewTagService {
-	private final ReviewMapper reviewMapper;
+	private final ReviewTagMapper reviewTagMapper;
 	
 	@Override
 	public void addTagListByReviewId(int tripReviewId, List<String> reviewTagList) throws Exception {
@@ -26,11 +27,8 @@ public class ReviewTagServiceImpl implements ReviewTagService {
 			map.put("tripReviewId", tripReviewId);
 			map.put("tag", tag);
 			
-			reviewMapper.addTag(map);
+			reviewTagMapper.addTag(map);
 		}
-		
-		
-		
 	}
 
 }

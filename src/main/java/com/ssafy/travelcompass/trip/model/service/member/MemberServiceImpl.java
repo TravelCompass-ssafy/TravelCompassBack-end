@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 	
-	private MemberMapper memberMapper;
+	private final MemberMapper memberMapper;
 
 	@Override
 	public void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception {

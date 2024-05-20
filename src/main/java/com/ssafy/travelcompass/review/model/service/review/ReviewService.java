@@ -1,10 +1,9 @@
 package com.ssafy.travelcompass.review.model.service.review;
 
-import java.util.List;
 
-import com.ssafy.travelcompass.review.model.dto.review.TripReviewDto;
+import com.ssafy.travelcompass.review.model.dto.review.RequestWriteReview;
 
 public interface ReviewService {
 
-	void writeReview(TripReviewDto requestTripReview) throws Exception;
+	void writeReview(RequestWriteReview requestWriteReview) throws Exception;
 }

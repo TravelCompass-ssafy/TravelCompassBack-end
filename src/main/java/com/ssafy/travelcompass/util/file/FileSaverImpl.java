@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,12 +26,9 @@ public class FileSaverImpl implements FileSaver {
 		String today = new SimpleDateFormat("yyMMdd").format(new Date());
 		String saveFolder = realPath + File.separator + today;
 		File folder = new File(saveFolder);
-		
-		System.out.println("fl:" + folder);
-		
+				
 		// 디렉토리가 존재하지 않으면 생성
 	    if (!folder.exists()) {
-	    	System.out.println("키킥");
 	        folder.mkdirs();
 	    }
 		
@@ -60,6 +59,34 @@ public class FileSaverImpl implements FileSaver {
         if(file.exists()) {
         	file.delete();
         }
+	}
+
+
+	@Override
+	public List<String> reviewImageSave(List<MultipartFile> reviewImageList) throws IllegalStateException, IOException {
+		String realPath = uploadDir + File.separator + "review";
+		String today = new SimpleDateFormat("yyMMdd").format(new Date());
+		String saveFolder = realPath + File.separator + today;
+		File folder = new File(saveFolder);
+				
+		// 디렉토리가 존재하지 않으면 생성
+	    if (!folder.exists()) {
+	        folder.mkdirs();
+	    }
+	    
+	    List<String> imagePaths = new ArrayList<>();
+	    for(MultipartFile file: reviewImageList) {
+	    	String ext = file.getOriginalFilename().split("\\.")[1];
+			String uuid = UUID.randomUUID().toString();
+			String newFileName = uuid + "." + ext;
+			File savedFile = new File(folder, newFileName);
+			
+			file.transferTo(savedFile);
+			
+			imagePaths.add("/images/review/" + today + "/" + newFileName);
+	    }
+		
+		return imagePaths;
 	}
 
 

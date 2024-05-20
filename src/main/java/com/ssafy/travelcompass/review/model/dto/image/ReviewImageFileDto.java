@@ -1,10 +1,17 @@
 package com.ssafy.travelcompass.review.model.dto.image;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReviewImageFileDto {
-	int reviewImageFileId;
-	int tripReviewId;
-	String path;
+
+	private int reviewImageFileId;
+	private int tripReviewId;
+	private String path;
 }

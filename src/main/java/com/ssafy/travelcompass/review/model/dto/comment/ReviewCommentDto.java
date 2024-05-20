@@ -2,14 +2,21 @@ package com.ssafy.travelcompass.review.model.dto.comment;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReviewCommentDto {
-	int reviewCommentId;
-	int tripReviewId;
-	int parentReviewCommentId;
-	int userId;
-	String content;
-	LocalDateTime createdAt;
+	private int reviewCommentId;
+	private int tripReviewId;
+	private int parentReviewCommentId;
+	private int userId;
+	private String content;
+	private LocalDateTime createdAt;
 }
