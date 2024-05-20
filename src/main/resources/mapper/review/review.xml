@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.review.model.mapper.ReviewMapper">
+
+	<resultMap type="tripReviewDto" id="review">
+		<result column="trip_review_id" property="tripReviewId"/>
+		<result column="user_id" property="userId"/>
+		<result column="content_id" property="contentId"/>
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="content" property="content"/>
+		<result column="star" property="star"/>
+		<result column="created_at" property="createdAt"/>
+	</resultMap>
+	
+	<insert id="writeReview" parameterType="TripReviewDto" useGeneratedKeys="true" keyProperty="tripReviewId">
+		INSERT INTO trip_review (user_id, content_id, trip_detail_id, content, star)
+		VALUES(#{userId}, #{contentId}, #{tripDetailId}, #{content}, #{star})
+	</insert>
+	
+</mapper>

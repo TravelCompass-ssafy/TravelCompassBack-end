@@ -6,4 +6,6 @@ public interface MemberService {
 
 	void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception;
 
+	TripDetailMemberDto findByUserId(int userId) throws Exception;
+
 }

@@ -11,11 +11,18 @@
 		<result column="star_check" property="starCheck" />
 	</resultMap>
 	
-	<select id="isMemberExistsByUserId" parameterType="int" resultMap="boolean">
+	<select id="isMemberExistsByUserId" parameterType="int" resultType="boolean">
 		SELECT count(*) count
 		FROM trip_detail_member
 		WHERE user_id = #{userId}
 	</select>
+	
+	<select id="findByUserId" parameterType="int" resultMap="member">
+		SELECT *
+		FROM trip_detail_member
+		WHERE user_id = #{userId}
+	</select>
+	
 	
 	<insert id="regist" parameterType="TripDetailMemberDto">
 		INSERT INTO trip_detail_member (user_id, trip_detail_id)

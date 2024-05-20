@@ -25,4 +25,11 @@ public class MemberServiceImpl implements MemberService {
 			memberMapper.regist(tripDetailMemberDto);
 		}
 	}
+	
+	@Override
+	public TripDetailMemberDto findByUserId(int userId) throws Exception {
+		TripDetailMemberDto member = memberMapper.findByUserId(userId);
+		
+		return member;
+	}
 }

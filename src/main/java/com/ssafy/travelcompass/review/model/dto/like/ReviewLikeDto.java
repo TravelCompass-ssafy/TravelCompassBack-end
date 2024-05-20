@@ -1,4 +1,4 @@
-package com.ssafy.travelcompass.review.model.dto;
+package com.ssafy.travelcompass.review.model.dto.like;
 
 import lombok.Data;
 

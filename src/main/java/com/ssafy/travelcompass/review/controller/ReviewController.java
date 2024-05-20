@@ -4,14 +4,16 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.travelcompass.review.model.dto.TripReviewDto;
-import com.ssafy.travelcompass.review.model.service.ReviewService;
+import com.ssafy.travelcompass.review.model.dto.review.TripReviewDto;
+import com.ssafy.travelcompass.review.model.service.review.ReviewService;
+import com.ssafy.travelcompass.util.jwt.JWTUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,10 +22,16 @@ import lombok.RequiredArgsConstructor;
 public class ReviewController {
 	
 	private final ReviewService reviewService;
+	private final JWTUtil jwtUtil;
 	
-	@GetMapping
-	public ResponseEntity<List<TripReviewDto>> getReviewList(@RequestParam("search-type") String searchType, @RequestParam("search-keyword") String searchKeyword) {
-		return new ResponseEntity<List<TripReviewDto>>(reviewService.getReviewList(searchType, searchKeyword), HttpStatus.OK);
+	@PostMapping
+	public ResponseEntity<?> writeReview(@RequestBody TripReviewDto requestTripReview,
+										 HttpServletRequest request) throws Exception {
+		int userId = jwtUtil.getUserId(request.getHeader("Authorization"));
+		requestTripReview.setUserId(userId);
+		
+		reviewService.writeReview(requestTripReview);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).build();	
 	}
-	
 }

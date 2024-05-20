@@ -1,18 +1,15 @@
 package com.ssafy.travelcompass.review.model.mapper;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.util.Map;
 
-import com.ssafy.travelcompass.review.model.dto.ReviewCommentDto;
-import com.ssafy.travelcompass.review.model.dto.ReviewImageFileDto;
-import com.ssafy.travelcompass.review.model.dto.ReviewLikeDto;
-import com.ssafy.travelcompass.review.model.dto.ReviewTagDto;
-import com.ssafy.travelcompass.review.model.dto.TripReviewDto;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.travelcompass.review.model.dto.review.TripReviewDto;
+
+@Mapper
 public interface ReviewMapper {
-	List<TripReviewDto> getReviewList(String searchType, String searchKeyword);
-	
-	List<ReviewCommentDto> getReviewCommentList(int tripReviewId);
-	List<ReviewImageFileDto> getReviewImageFilList(int tripReviewId);
-	List<ReviewLikeDto> getReviewLikeList(int tripReviewId);
-	List<ReviewTagDto> getReviewTagList(int tripReviewId);
+	void writeReview(TripReviewDto requestTripReview) throws SQLException;
+
+	void addTag(Map<String, Object> map) throws SQLException;
 }
