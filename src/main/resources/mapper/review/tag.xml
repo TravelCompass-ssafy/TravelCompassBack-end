@@ -15,4 +15,10 @@
 		VALUES(#{tripReviewId}, #{tag})
 	</insert>
 	
+	<select id="findByTripReviewId" parameterType="int" resultMap="tag">
+		SELECT *
+		FROM review_tag
+		WHERE trip_review_id = #{tripReviewId}
+	</select>
+	
 </mapper>

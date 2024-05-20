@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.travelcompass.review.model.dto.image.ReviewImageFileDto;
 import com.ssafy.travelcompass.review.model.mapper.ReviewImageFileMapper;
 import com.ssafy.travelcompass.util.file.FileSaver;
 
@@ -33,5 +34,11 @@ public class ReviewImageFileServiceImpl implements ReviewImageFileService {
 			
 			reviewImageFileMapper.addImageByTripReviewId(map);
 		}
+	}
+
+	@Override
+	public List<ReviewImageFileDto> findByTripReviewId(int tripReviewId) throws Exception {
+		List<ReviewImageFileDto> reviewImages = reviewImageFileMapper.findByTripReviewId(tripReviewId);
+		return reviewImages;
 	}
 }

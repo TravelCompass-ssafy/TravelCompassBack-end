@@ -15,4 +15,10 @@
 		VALUES(#{tripReviewId}, #{path})
 	</insert>
 	
+	<select id="findByTripReviewId" parameterType="int" resultMap="image">
+		SELECT *
+		FROM review_image_file 
+		WHERE trip_review_id = #{tripReviewId}
+	</select>
+	
 </mapper>

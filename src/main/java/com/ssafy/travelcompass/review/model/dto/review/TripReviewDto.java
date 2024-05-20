@@ -21,10 +21,12 @@ public class TripReviewDto {
 	private int star;
 	private LocalDateTime createdAt;
 	
-	private int nickname; // 작성자 이름
-	private int attractionTitle; // 관광지 이름
+	private String nickName; // 작성자 이름
+	private String profile; // 프로필 사진 경로
+	private String attractionTitle; // 관광지 이름
 	private List<String> reviewImageList; // 리뷰 이미지 리스트
 	private int likeCount; // 좋아요 갯수
+	private int commentCount; // 댓글 갯수
 	private boolean likeCheck; // 좋아요 체크 여부
 	private List<String> reviewTagList; // 태그 리스트
 }

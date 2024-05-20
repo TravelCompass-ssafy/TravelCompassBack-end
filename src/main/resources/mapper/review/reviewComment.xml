@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.review.model.mapper.ReviewCommentMapper">
+
+	<resultMap type="reviewCommentDto" id="comment">
+		<result column="review_comment_id" property="reviewComentId"/>
+		<result column="trip_review_id" property="tripReviewId"/>
+		<result column="parent_review_comment_id" property="parentReviewCommentId"/>
+		<result column="user_id" property="userId"/>
+		<result column="content" property="content"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="username" property="userName"/>
+		<result column="profile" property="profile"/>
+	</resultMap>
+	
+	<select id="getCommentsByTripReviewId" parameterType="map" resultMap="comment">
+		SELECT 
+			review_comment_id, 
+			trip_review_id, 
+			parent_review_comment_id, 
+			user_id, 
+			content, 
+			created_at, 
+			username, 
+			profile
+		FROM review_comment
+		JOIN user USING(user_id)
+		WHERE parent_review_comment_id IS NULL
+		AND trip_review_id = #{tripReviewId}
+		ORDER BY created_at DESC
+		LIMIT #{offset}, #{size};
+	</select>
+	
+	<select id="getRepliesByParentReviewCommentId" parameterType="int" resultMap="comment">
+		SELECT 
+			review_comment_id, 
+			trip_review_id, 
+			parent_review_comment_id, 
+			user_id, 
+			content, 
+			created_at, 
+			username, 
+			profile
+		FROM review_comment
+		JOIN user USING(user_id)
+		WHERE parent_review_comment_id = #{parentReviewCommentId}
+		ORDER BY created_at DESC
+		LIMIT #{offset}, #{size};
+	</select>
+	
+</mapper>

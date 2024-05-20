@@ -12,11 +12,53 @@
 		<result column="content" property="content"/>
 		<result column="star" property="star"/>
 		<result column="created_at" property="createdAt"/>
+		<result column="nickname" property="nickName" />
+		<result column="profile" property="profile" />
+		<result column="attraction_title" property="attractionTitle" />
+		<result column="like_count" property="likeCount" />
+		<result column="comment_count" property="commentCount" />
 	</resultMap>
 	
 	<insert id="writeReview" parameterType="TripReviewDto" useGeneratedKeys="true" keyProperty="tripReviewId">
 		INSERT INTO trip_review (user_id, content_id, trip_detail_id, content, star)
 		VALUES(#{userId}, #{contentId}, #{tripDetailId}, #{content}, #{star})
 	</insert>
+	
+	<select id="getReviews" parameterType="map" resultMap="review">
+		SELECT 
+			trip_review_id, 
+		    tr.user_id as user_id, 
+		    content_id, 
+		    tr.content as content, 
+		    star, 
+		    tr.created_at as created_at, 
+		    nickname,
+		    profile,
+    		title as attraction_title,
+		    COALESCE(l.like_count, 0) AS like_count,
+		    COALESCE(c.comment_count, 0) AS comment_count
+		FROM trip_review tr
+		LEFT JOIN user USING(user_id)
+		LEFT JOIN attraction_info USING(content_id)
+		LEFT JOIN (
+			SELECT 
+				trip_review_id,
+		        COUNT(*) AS like_count
+			FROM
+				review_like
+			GROUP BY trip_review_id
+		) l USING(trip_review_id)
+		LEFT JOIN (
+			SELECT
+				trip_review_id,
+				COUNT(*) AS comment_count
+			FROM 
+				review_comment
+			GROUP BY
+				trip_review_id
+		) c USING(trip_review_id)
+		ORDER BY created_at DESC
+		LIMIT #{offset}, #{size};
+	</select>
 	
 </mapper>

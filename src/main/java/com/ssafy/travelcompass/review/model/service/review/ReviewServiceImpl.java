@@ -1,11 +1,18 @@
 package com.ssafy.travelcompass.review.model.service.review;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.travelcompass.exception.custom.isNotMemberException;
+import com.ssafy.travelcompass.review.model.dto.image.ReviewImageFileDto;
 import com.ssafy.travelcompass.review.model.dto.review.RequestWriteReview;
 import com.ssafy.travelcompass.review.model.dto.review.TripReviewDto;
+import com.ssafy.travelcompass.review.model.dto.tag.ReviewTagDto;
 import com.ssafy.travelcompass.review.model.mapper.ReviewMapper;
 import com.ssafy.travelcompass.review.model.service.image.ReviewImageFileService;
 import com.ssafy.travelcompass.review.model.service.tag.ReviewTagService;
@@ -42,5 +49,34 @@ public class ReviewServiceImpl implements ReviewService {
 			reviewImageFileService.saveImage(tripReviewDto.getTripReviewId(), requestWriteReview.getReviewImageList());
 			
 		}
+	}
+
+	@Override
+	public List<TripReviewDto> getReviews(int offset, int size) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("offset", offset);
+		map.put("size", size);
+		List<TripReviewDto> reviews = reviewMapper.getReviews(map);
+		
+		for(TripReviewDto review : reviews) {
+			
+			int tripReviewId = review.getTripReviewId();
+			
+			List<ReviewTagDto> tags = reviewTagService.findByTripReviewId(tripReviewId);
+			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(tripReviewId);
+		
+			List<String> tagList = tags.stream()
+							            .map(ReviewTagDto::getTag)
+							            .collect(Collectors.toList());
+			
+			List<String> imagePathList = images.stream()
+												.map(ReviewImageFileDto::getPath)
+												.collect(Collectors.toList());
+			
+			review.setReviewTagList(tagList);
+			review.setReviewImageList(imagePathList);
+		}
+		
+		return reviews;
 	}
 }

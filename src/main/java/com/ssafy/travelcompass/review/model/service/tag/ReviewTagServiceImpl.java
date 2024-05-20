@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.travelcompass.review.model.dto.tag.ReviewTagDto;
 import com.ssafy.travelcompass.review.model.mapper.ReviewMapper;
 import com.ssafy.travelcompass.review.model.mapper.ReviewTagMapper;
 
@@ -29,6 +30,12 @@ public class ReviewTagServiceImpl implements ReviewTagService {
 			
 			reviewTagMapper.addTag(map);
 		}
+	}
+
+	@Override
+	public List<ReviewTagDto> findByTripReviewId(int tripReviewId) throws Exception {
+		List<ReviewTagDto> tags = reviewTagMapper.findByTripReviewId(tripReviewId);
+		return tags;
 	}
 
 }
