@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.travelcompass.trip.model.dto.TripDetailDto;
+import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 import com.ssafy.travelcompass.trip.model.service.TripService;
 
 import lombok.RequiredArgsConstructor;

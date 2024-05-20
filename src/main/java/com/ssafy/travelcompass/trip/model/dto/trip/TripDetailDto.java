@@ -1,4 +1,4 @@
-package com.ssafy.travelcompass.trip.model.dto;
+package com.ssafy.travelcompass.trip.model.dto.trip;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,5 +23,4 @@ public class TripDetailDto {
 	int sidoCode;
 	List<String> imageFileList;
 	List<List<AttractionInfoDto>> attractionInfoList;
-	List<TripDetailCommentDto> tripDetailCommentList;
 }

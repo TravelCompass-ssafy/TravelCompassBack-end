@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.travelcompass.attraction.model.dto.AttractionInfoDto;
-import com.ssafy.travelcompass.trip.model.dto.TripActivityDto;
-import com.ssafy.travelcompass.trip.model.dto.TripDetailDto;
-import com.ssafy.travelcompass.trip.model.dto.TripPlanDto;
+import com.ssafy.travelcompass.trip.model.dto.plan.TripActivityDto;
+import com.ssafy.travelcompass.trip.model.dto.plan.TripPlanDto;
+import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 import com.ssafy.travelcompass.trip.model.mapper.TripMapper;
 
 import lombok.RequiredArgsConstructor;

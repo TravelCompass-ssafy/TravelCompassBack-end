@@ -1,4 +1,4 @@
-package com.ssafy.travelcompass.trip.model.dto;
+package com.ssafy.travelcompass.trip.model.dto.comment;
 
 import java.time.LocalDateTime;
 

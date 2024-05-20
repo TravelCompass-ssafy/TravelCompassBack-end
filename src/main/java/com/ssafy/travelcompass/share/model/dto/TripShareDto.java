@@ -2,7 +2,7 @@ package com.ssafy.travelcompass.share.model.dto;
 
 import java.util.List;
 
-import com.ssafy.travelcompass.trip.model.dto.TripDetailDto;
+import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 
 import lombok.Data;
 
