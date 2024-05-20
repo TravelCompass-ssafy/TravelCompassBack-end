@@ -9,5 +9,6 @@ import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 
 public interface TripService {
 	List<TripDetailDto> getTripDetailList(LocalDate date, int sidoCode, String keyword);
-	void registTripDetail(TripDetailDto tripDetailDto);
+	TripDetailDto getTripDetail(int tripDetailId);
+	void registTripDetail(TripDetailDto tripDetailDto) throws Exception;
 }

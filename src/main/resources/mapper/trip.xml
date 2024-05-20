@@ -6,14 +6,21 @@
 	<resultMap type="TripDetailDto" id="TripDetailDto">
 		<result column="trip_detail_id" property="tripDetailId"/>
 		<result column="user_id" property="userId"/>
-		<result column="user_id" property="userId"/>
 		<result column="image_path" property="imagePath"/>
 		<result column="sido_name" property="sidoName"/>
 		<result column="start_date" property="startDate"/>
 		<result column="end_date" property="endDate"/>
 		<result column="max_capacity" property="maxCapacity"/>
 		<result column="created_at" property="createdAt"/>
+		<result column="create_time" property="createTime"/>
 		<result column="sido_code" property="sidoCode"/>
+	</resultMap>
+	
+	<resultMap type="TripDetailMemberDto" id="TripDetailMemberDto">
+		<result column="trip_detail_member_id" property="tripDetailMemberId"/>
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="user_id" property="userId"/>
+		<result column="star_check" property="starCheck"/>
 	</resultMap>
 	
 	<resultMap type="TripPlanDto" id="TripPlanDto">
@@ -29,6 +36,17 @@
 		<result column="activity_order" property="activityOrder"/>
 	</resultMap>
 	
+	<resultMap type="TripPlanAttractionDto" id="TripPlanAttractionDto">
+		<result column="content_id" property="contentId"/>
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="first_image2" property="firstImage2"/>
+		<result column="sido_code" property="sidoCode"/>
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="trip_date" property="tripDate"/>
+		<result column="activity_order" property="activityOrder"/>
+	</resultMap>
+	
 	<select id="getTripDetailList" resultMap="TripDetailDto">
 		select 
 			d1.trip_detail_id, 
@@ -41,7 +59,8 @@
 			u1.nickname,
 			d1.max_capacity,
 			d1.view,
-			d1.created_at
+			d1.created_at,
+			timestampdiff(minute, d1.created_at, now()) as create_time
 		from 
 			trip_detail d1
 		join
@@ -63,6 +82,66 @@
 	            and s1.sido_code = #{sidoCode}
 	        </if>
 	    </where>
+	</select>
+	
+	<select id="getTripDetail" resultMap="TripDetailDto">
+		select 
+			d1.trip_detail_id, 
+			u1.user_id, 
+			d1.image_path,
+			s1.sido_name, 
+			d1.title, 
+			d1.start_date, 
+			d1.end_date,
+			u1.nickname,
+			d1.max_capacity,
+			d1.view,
+			d1.created_at,
+			timestampdiff(minute, d1.created_at, now()) as create_time,
+			d1.content
+		from 
+			trip_detail d1
+		join
+			user u1
+		on
+			d1.user_id = u1.user_id
+		join
+			sido s1
+		on
+			d1.sido_code = s1.sido_code
+		where
+			d1.trip_detail_id = #{tripDetailId}
+	</select>
+
+	<select id="getTripMemberList" resultMap="TripDetailMemberDto">
+		select
+			trip_detail_member_id,
+			trip_detail_id, 
+			user_id, 
+			star_check
+		from 
+			trip_detail_member
+		where
+			trip_detail_id = #{tripDetailId}
+	</select>
+	
+	<select id="getPlanAttractionList" resultMap="TripPlanAttractionDto">
+		select 
+			*
+		from 
+			attraction_info a2
+		join 
+			(
+				select p1.trip_date, a1.activity_order, a1.content_id
+				from trip_plan p1
+				join trip_activity a1
+				on p1.trip_plan_id = a1.trip_plan_id
+				where trip_detail_id = #{tripDetailId}
+			) p2
+		on 
+			a2.content_id = p2.content_id
+		order by 
+			p2.trip_date asc, p2.activity_order asc;
 	</select>
 	
 	<insert id="registTripDetail" parameterType="TripDetailDto" useGeneratedKeys="true" keyProperty="tripDetailId">

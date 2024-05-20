@@ -32,12 +32,16 @@ public class TripController {
 	
 	@GetMapping
 	public ResponseEntity<?> getTripList(@RequestParam(required = false) LocalDate date, @RequestParam(required = false) int sidoCode, @RequestParam(required = false) String keyword) {
-		System.out.println(1);
 		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetailList(date, sidoCode, keyword));
 	}
 	
+	@GetMapping("/{tripDetailId}")
+	public ResponseEntity<?> getTripDetail(@PathVariable int tripDetailId) {
+		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetail(tripDetailId));
+	}
+	
 	@PostMapping
-	public ResponseEntity<?> registTrip(@RequestBody TripDetailDto tripDetailDto) {
+	public ResponseEntity<?> registTrip(@RequestBody TripDetailDto tripDetailDto) throws Exception {
 		tripService.registTripDetail(tripDetailDto);
 		
 		return new ResponseEntity<Void>(HttpStatus.CREATED);

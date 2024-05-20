@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.travelcompass.attraction.model.dto.AttractionInfoDto;
+import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
+import com.ssafy.travelcompass.trip.model.dto.plan.TripPlanAttractionDto;
 
 import lombok.Data;
 
@@ -22,9 +24,11 @@ public class TripDetailDto {
 	int maxCapacity;
 	int view;
 	LocalDateTime createdAt;
+	int createTime;
 
 	String content;
 	int sidoCode;
 
-	List<List<AttractionInfoDto>> attractionInfoList;
+	List<TripDetailMemberDto> memberList;
+	List<List<TripPlanAttractionDto>> tripPlanAttractionList;
 }
