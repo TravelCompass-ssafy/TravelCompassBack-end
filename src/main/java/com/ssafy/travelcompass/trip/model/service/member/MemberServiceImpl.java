@@ -1,5 +1,8 @@
 package com.ssafy.travelcompass.trip.model.service.member;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ssafy.travelcompass.exception.custom.MemberDuplicationException;
@@ -16,7 +19,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception {
-		boolean isMemberExists = memberMapper.isMemberExistsByUserId(tripDetailMemberDto.getUserId());
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", tripDetailMemberDto.getUserId());
+		map.put("tripDetailId", tripDetailMemberDto.getTripDetailId());
+		
+		boolean isMemberExists = memberMapper.isMemberExistsByUserIdAndTripDetailId(map);
 		
 		if(isMemberExists) {
 			throw new MemberDuplicationException();
