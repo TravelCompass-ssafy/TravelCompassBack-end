@@ -10,4 +10,5 @@ public class TripDetailMemberDto {
 	int tripDetailId;
 	int userId;
 	boolean starCheck;
+	String nickname;
 }
