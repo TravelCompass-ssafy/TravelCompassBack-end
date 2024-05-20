@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
-import com.ssafy.travelcompass.trip.model.service.TripService;
+import com.ssafy.travelcompass.trip.model.service.member.MemberService;
+import com.ssafy.travelcompass.trip.model.service.trip.TripService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TripController {
 	private final TripService tripService;
+	private final MemberService memberService;
 	
 	@GetMapping
 	public ResponseEntity<?> getTripList() {
@@ -26,9 +29,16 @@ public class TripController {
 	
 	@PostMapping
 	public ResponseEntity<?> registTrip(@RequestBody TripDetailDto tripDetailDto) {
-		System.out.println(tripDetailDto);
 		tripService.registTripDetail(tripDetailDto);
 		
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	}
+	
+	// Member
+	@PostMapping("/{trip-id}")
+	public ResponseEntity<?> registMember(@RequestBody TripDetailMemberDto tripDetailMemberDto) throws Exception {
+		memberService.regist(tripDetailMemberDto);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
