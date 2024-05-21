@@ -49,10 +49,13 @@ public class ReviewController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> getReviews(@RequestParam("page") int page, @RequestParam("size") int size) throws Exception {
+	public ResponseEntity<?> getReviews(@RequestParam("page") int page, 
+										@RequestParam("size") int size,
+										@RequestParam(required = false) String keyword,
+										@RequestParam(required = false) String category) throws Exception {
 		
 		int offset = page * size;
-		List<TripReviewDto> result = reviewService.getReviews(offset, size);
+		List<TripReviewDto> result = reviewService.getReviews(offset, size, keyword, category);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}

@@ -54,10 +54,12 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<TripReviewDto> getReviews(int offset, int size) throws Exception {
+	public List<TripReviewDto> getReviews(int offset, int size, String keyword, String category) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("offset", offset);
 		map.put("size", size);
+		map.put("keyword", keyword);
+		map.put("category", category);
 		List<TripReviewDto> reviews = reviewMapper.getReviews(map);
 		
 		for(TripReviewDto review : reviews) {

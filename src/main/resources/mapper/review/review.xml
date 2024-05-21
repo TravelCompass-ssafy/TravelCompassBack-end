@@ -58,6 +58,13 @@
 			GROUP BY
 				trip_review_id
 		) c USING(trip_review_id)
+		WHERE 1=1
+        <if test="category != null and category != ''">
+            AND content_type_id = #{category}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND content LIKE CONCAT('%', #{keyword}, '%')
+        </if>
 		ORDER BY created_at DESC
 		LIMIT #{offset}, #{size};
 	</select>
