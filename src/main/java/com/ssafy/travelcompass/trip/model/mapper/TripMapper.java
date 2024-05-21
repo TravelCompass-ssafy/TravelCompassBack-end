@@ -22,6 +22,8 @@ public interface TripMapper {
 	Integer getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate);
 	TripDetailDto getProceedTrip(int userId);
 	
+	void upCountView(int tripDetailId);
+	
 	void registTripDetail(TripDetailDto tripDetailDto);
 	void registTripDetailPlan(TripPlanDto tripPlanDto);
 	void registTripActivity(TripActivityDto tripActivityDto);

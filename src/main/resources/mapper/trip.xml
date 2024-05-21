@@ -261,6 +261,13 @@
 		values (#{tripPlanId}, #{contentId}, #{activityOrder})
 	</insert>
 	
-
+	<update id="upCountView">
+		update
+			trip_detail
+		set
+			view = view + 1
+		where
+			trip_detail_id = #{tripDetailId};
+	</update>
 	
 </mapper>

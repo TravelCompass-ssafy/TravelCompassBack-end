@@ -135,4 +135,9 @@ public class TripServiceImpl implements TripService {
 	public List<TripDetailDto> getShareList(LocalDate date, int sidoCode, String keyword) {
 		return tripMapper.getShareList(date, sidoCode, keyword);
 	}
+
+	@Override
+	public void upCountViewI(int tripDetailId) {
+		tripMapper.upCountView(tripDetailId);
+	}
 }

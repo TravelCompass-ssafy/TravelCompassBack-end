@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,6 +68,14 @@ public class TripController {
 	public ResponseEntity<?> checkJoinAble(@RequestParam(required = true) int userId, @RequestParam(required = true) LocalDate startDate, @RequestParam(required = true) LocalDate endDate) {
 		tripService.getDuplicationTripId(userId, startDate, endDate);
 		return ResponseEntity.status(HttpStatus.OK).body(tripService.getDuplicationTripId(userId, startDate, endDate));
+	}
+	
+	@PutMapping("/view/{tripDetailId}")
+	public ResponseEntity<?> upCountView(@PathVariable int tripDetailId) {
+		System.out.println(tripDetailId);
+		tripService.upCountViewI(tripDetailId);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	// Member
