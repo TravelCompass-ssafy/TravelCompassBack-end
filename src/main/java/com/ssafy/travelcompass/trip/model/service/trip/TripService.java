@@ -12,4 +12,5 @@ public interface TripService {
 	TripDetailDto getTripDetail(int tripDetailId);
 	void registTripDetail(TripDetailDto tripDetailDto) throws Exception;
 	boolean getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate);
+	TripDetailDto getProceedTrip(int userId);
 }

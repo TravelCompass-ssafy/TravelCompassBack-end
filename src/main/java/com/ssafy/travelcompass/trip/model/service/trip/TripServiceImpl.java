@@ -88,4 +88,37 @@ public class TripServiceImpl implements TripService {
 	public boolean getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate) {
 		return tripMapper.getDuplicationTripId(userId, startDate, endDate) == null;
 	}
+
+	@Override
+	public TripDetailDto getProceedTrip(int userId) {
+		TripDetailDto tripDetailDto = tripMapper.getProceedTrip(userId);
+		
+		int tripDetailId = tripDetailDto.getTripDetailId();
+		tripDetailDto.setMemberList(tripMapper.getTripMemberList(tripDetailId));
+		
+
+		List<TripPlanAttractionDto> tripPlanAttractionDto = tripMapper.getPlanAttractionList(tripDetailId);
+		List<List<TripPlanAttractionDto>> tripPlanAttractionList = new ArrayList<>();
+		
+		int planSize = 0;
+		int listIndex = 0;
+		
+		for (LocalDate l = tripDetailDto.getStartDate(); !l.isAfter(tripDetailDto.getEndDate()); l = l.plusDays(1)) {
+			tripPlanAttractionList.add(new ArrayList<>());
+			
+			while (tripPlanAttractionDto.size() > planSize) {
+				if (!tripPlanAttractionDto.get(planSize).getTripDate().equals(l)) {
+					break;
+				}
+				
+				tripPlanAttractionList.get(listIndex).add(tripPlanAttractionDto.get(planSize++));
+			}
+			
+			listIndex++;
+		}
+		
+		tripDetailDto.setTripPlanAttractionList(tripPlanAttractionList);
+		
+		return tripDetailDto;
+	}
 }

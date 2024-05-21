@@ -40,6 +40,11 @@ public class TripController {
 		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetail(tripDetailId));
 	}
 	
+	@GetMapping("proceed/{userId}")
+	public ResponseEntity<?> getProceedTrip(@PathVariable int userId) {
+		return ResponseEntity.status(HttpStatus.OK).body(tripService.getProceedTrip(userId));
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> registTrip(@RequestBody TripDetailDto tripDetailDto) throws Exception {
 		tripService.registTripDetail(tripDetailDto);

@@ -19,6 +19,7 @@ public interface TripMapper {
 	List<TripDetailMemberDto> getTripMemberList(int tripDetailId);
 	List<TripPlanAttractionDto> getPlanAttractionList(int tripDetailId);
 	Integer getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate);
+	TripDetailDto getProceedTrip(int userId);
 	
 	void registTripDetail(TripDetailDto tripDetailDto);
 	void registTripDetailPlan(TripPlanDto tripPlanDto);
