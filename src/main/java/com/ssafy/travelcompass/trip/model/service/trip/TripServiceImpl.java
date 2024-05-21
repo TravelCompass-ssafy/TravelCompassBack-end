@@ -12,8 +12,10 @@ import com.ssafy.travelcompass.trip.model.dto.plan.TripActivityDto;
 import com.ssafy.travelcompass.trip.model.dto.plan.TripPlanAttractionDto;
 import com.ssafy.travelcompass.trip.model.dto.plan.TripPlanDto;
 import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
+import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailImageDto;
 import com.ssafy.travelcompass.trip.model.mapper.TripMapper;
 import com.ssafy.travelcompass.trip.model.service.member.MemberService;
+import com.ssafy.travelcompass.util.file.FileSaver;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class TripServiceImpl implements TripService {
 	private final TripMapper tripMapper;
 	private final MemberService memberService;
+	private final FileSaver fileSaver;
 	
 	@Override
 	public List<TripDetailDto> getTripDetailList(LocalDate date, int sidoCode, String keyword) {
@@ -61,6 +64,10 @@ public class TripServiceImpl implements TripService {
 
 	@Override
 	public void registTripDetail(TripDetailDto tripDetailDto) throws Exception {
+		String tripDetailSavePath = fileSaver.tripDetailSave(tripDetailDto.getImage());
+		
+		tripDetailDto.setImagePath(tripDetailSavePath);
+		
 		tripMapper.registTripDetail(tripDetailDto);
 		TripDetailMemberDto tripDetailMemberDto = new TripDetailMemberDto();
 		tripDetailMemberDto.setUserId(tripDetailDto.getUserId());

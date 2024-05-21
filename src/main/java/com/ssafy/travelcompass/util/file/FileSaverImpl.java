@@ -90,4 +90,30 @@ public class FileSaverImpl implements FileSaver {
 	}
 
 
+	@Override
+	public String tripDetailSave(MultipartFile image) throws IllegalStateException, IOException {
+		String realPath = uploadDir + File.separator + "trip";
+		String today = new SimpleDateFormat("yyMMdd").format(new Date());
+		String saveFolder = realPath + File.separator + today;
+		File folder = new File(saveFolder);
+				
+		// 디렉토리가 존재하지 않으면 생성
+	    if (!folder.exists()) {
+	        folder.mkdirs();
+	    }
+		
+		String ext = image.getOriginalFilename().split("\\.")[1];
+		String uuid = UUID.randomUUID().toString();
+		
+		String newFileName = uuid + "." + ext;
+		
+		File savedFile = new File(folder, newFileName);
+				
+		image.transferTo(savedFile);
+		
+		return "/images/trip/" + today + "/" + newFileName;
+		
+	}
+
+
 }

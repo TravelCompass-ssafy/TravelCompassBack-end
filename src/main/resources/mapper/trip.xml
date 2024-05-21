@@ -245,8 +245,8 @@
 	
 	<insert id="registTripDetail" parameterType="TripDetailDto" useGeneratedKeys="true" keyProperty="tripDetailId">
 		insert into trip_detail
-		(user_id, title, content, start_date, end_date, max_capacity, created_at, sido_code)
-		values (#{userId}, #{title}, #{content}, #{startDate}, #{endDate}, #{maxCapacity}, now(), #{sidoCode})
+		(user_id, title, content, start_date, end_date, max_capacity, created_at, sido_code, image_path)
+		values (#{userId}, #{title}, #{content}, #{startDate}, #{endDate}, #{maxCapacity}, now(), #{sidoCode}, #{imagePath})
 	</insert>
 	
 	<insert id="registTripDetailPlan" parameterType="TripPlanDto" useGeneratedKeys="true" keyProperty="tripPlanId">

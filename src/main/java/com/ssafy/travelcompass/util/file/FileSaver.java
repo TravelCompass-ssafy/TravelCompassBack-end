@@ -12,4 +12,6 @@ public interface FileSaver {
 	void profileRemove(String profilePath);
 
 	List<String> reviewImageSave(List<MultipartFile> reviewImageList) throws IllegalStateException, IOException;
+
+	String tripDetailSave(MultipartFile image) throws IllegalStateException, IOException;
 }
