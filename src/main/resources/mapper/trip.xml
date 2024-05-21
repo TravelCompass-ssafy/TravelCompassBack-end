@@ -148,6 +148,26 @@
 		order by 
 			p2.trip_date asc, p2.activity_order asc;
 	</select>
+
+	<select id="getDuplicationTripId" resultType="int">
+		select
+			m1.trip_detail_id
+		from
+			trip_detail_member m1
+		join
+			trip_detail t1
+		on
+			m1.trip_detail_id = t1.trip_detail_id
+		where 
+			not(
+				(t1.start_date &gt; #{startDate} and t1.start_date &gt; #{endDate})
+				or
+				(t1.end_date &lt; #{startDate} and t1.end_date &lt; #{endDate})
+		    )
+		    and
+		    	m1.user_id = #{userId}
+		limit 1
+	</select>
 	
 	<insert id="registTripDetail" parameterType="TripDetailDto" useGeneratedKeys="true" keyProperty="tripDetailId">
 		insert into trip_detail

@@ -47,6 +47,12 @@ public class TripController {
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/checkjoinable")
+	public ResponseEntity<?> checkJoinAble(@RequestParam(required = true) int userId, @RequestParam(required = true) LocalDate startDate, @RequestParam(required = true) LocalDate endDate) {
+		tripService.getDuplicationTripId(userId, startDate, endDate);
+		return ResponseEntity.status(HttpStatus.OK).body(tripService.getDuplicationTripId(userId, startDate, endDate));
+	}
+	
 	// Member
 	@PostMapping("/{trip-id}")
 	public ResponseEntity<?> registMember(@RequestBody TripDetailMemberDto tripDetailMemberDto,

@@ -83,4 +83,9 @@ public class TripServiceImpl implements TripService {
 			}
 		}
 	}
+
+	@Override
+	public boolean getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate) {
+		return tripMapper.getDuplicationTripId(userId, startDate, endDate) == null;
+	}
 }
