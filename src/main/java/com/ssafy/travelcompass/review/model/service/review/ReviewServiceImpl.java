@@ -15,6 +15,7 @@ import com.ssafy.travelcompass.review.model.dto.review.TripReviewDto;
 import com.ssafy.travelcompass.review.model.dto.tag.ReviewTagDto;
 import com.ssafy.travelcompass.review.model.mapper.ReviewMapper;
 import com.ssafy.travelcompass.review.model.service.image.ReviewImageFileService;
+import com.ssafy.travelcompass.review.model.service.like.ReviewLikeService;
 import com.ssafy.travelcompass.review.model.service.tag.ReviewTagService;
 import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 import com.ssafy.travelcompass.trip.model.service.member.MemberService;
@@ -29,6 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private final ReviewTagService reviewTagService;
 	private final MemberService memberService;
 	private final ReviewImageFileService reviewImageFileService;
+	private final ReviewLikeService reviewLikeService;
 	
 	@Override
 	public void writeReview(RequestWriteReview  requestWriteReview) throws Exception {
@@ -64,7 +66,8 @@ public class ReviewServiceImpl implements ReviewService {
 			
 			List<ReviewTagDto> tags = reviewTagService.findByTripReviewId(tripReviewId);
 			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(tripReviewId);
-		
+			boolean isLiked = reviewLikeService.isLiked(review.getTripReviewId(), review.getUserId());
+			
 			List<String> tagList = tags.stream()
 							            .map(ReviewTagDto::getTag)
 							            .collect(Collectors.toList());
@@ -75,6 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
 			
 			review.setReviewTagList(tagList);
 			review.setReviewImageList(imagePathList);
+			review.setLikeCheck(isLiked);
 		}
 		
 		return reviews;

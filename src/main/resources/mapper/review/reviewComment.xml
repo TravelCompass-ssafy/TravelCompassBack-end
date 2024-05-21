@@ -5,13 +5,13 @@
 <mapper namespace="com.ssafy.travelcompass.review.model.mapper.ReviewCommentMapper">
 
 	<resultMap type="reviewCommentDto" id="comment">
-		<result column="review_comment_id" property="reviewComentId"/>
+		<result column="review_comment_id" property="reviewCommentId"/>
 		<result column="trip_review_id" property="tripReviewId"/>
 		<result column="parent_review_comment_id" property="parentReviewCommentId"/>
 		<result column="user_id" property="userId"/>
 		<result column="content" property="content"/>
 		<result column="created_at" property="createdAt"/>
-		<result column="username" property="userName"/>
+		<result column="nickname" property="nickName"/>
 		<result column="profile" property="profile"/>
 	</resultMap>
 	
@@ -23,7 +23,7 @@
 			user_id, 
 			content, 
 			created_at, 
-			username, 
+			nickname, 
 			profile
 		FROM review_comment
 		JOIN user USING(user_id)
@@ -41,13 +41,38 @@
 			user_id, 
 			content, 
 			created_at, 
-			username, 
+			nickname, 
 			profile
 		FROM review_comment
 		JOIN user USING(user_id)
-		WHERE parent_review_comment_id = #{parentReviewCommentId}
+		WHERE parent_review_comment_id = #{reviewCommentId}
 		ORDER BY created_at DESC
-		LIMIT #{offset}, #{size};
 	</select>
+	
+	
+	<insert id="writeComment" parameterType="ReviewCommentDto" useGeneratedKeys="true" keyProperty="reviewCommentId">
+		INSERT INTO review_comment(trip_review_id, user_id, content)
+		VALUES(#{tripReviewId}, #{userId}, #{content})
+	</insert>
+	
+	<select id="findById" parameterType="int" resultMap="comment">
+		SELECT 
+			review_comment_id, 
+			trip_review_id, 
+			parent_review_comment_id, 
+			user_id, 
+			content, 
+			created_at, 
+			nickname, 
+			profile
+		FROM review_comment
+		JOIN user USING(user_id)
+		WHERE review_comment_id = #{reviewCommentId}
+	</select>
+	
+	<insert id="writeCommentReply" parameterType="ReviewCommentDto" useGeneratedKeys="true" keyProperty="reviewCommentId">
+		INSERT INTO review_comment(trip_review_id, parent_review_comment_id, user_id, content)
+		VALUES(#{tripReviewId}, #{parentReviewCommentId}, #{userId}, #{content})
+	</insert>
 	
 </mapper>

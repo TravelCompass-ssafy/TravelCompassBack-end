@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.review.model.mapper.ReviewLikeMapper">
+
+	<resultMap type="reviewLikeDto" id="like">
+		<result column="review_like_id" property="reviewLikeId"/>
+		<result column="trip_review_id" property="tripReviewId"/>
+		<result column="user_id" property="userId"/>
+	</resultMap>
+	
+	<select id="isLiked" parameterType="ReviewLikeDto" resultType="boolean">
+		SELECT count(*) count
+		FROM review_like
+		WHERE trip_review_id = #{tripReviewId} AND user_id = #{userId}
+	</select>
+	
+	<insert id="saveLike" parameterType="ReviewLikeDto">
+		INSERT INTO review_like(trip_review_id, user_id)
+		VALUES(#{tripReviewId}, #{userId})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="ReviewLikeDto">
+		DELETE FROM review_like
+		WHERE trip_review_id = #{tripReviewId} AND user_id = #{userId}
+	</delete>
+	
+</mapper>

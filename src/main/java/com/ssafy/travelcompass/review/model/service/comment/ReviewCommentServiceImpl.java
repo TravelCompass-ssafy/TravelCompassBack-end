@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReviewCommentServiceImpl implements ReviewCommentService {
-	private ReviewCommentMapper reviewCommentMapper;
+	private final ReviewCommentMapper reviewCommentMapper;
 	
 
 	@Override
@@ -25,16 +25,35 @@ public class ReviewCommentServiceImpl implements ReviewCommentService {
 		map.put("tripReviewId", tripReviewId);
 		map.put("offset", offset);
 		map.put("size", size);
-		
+
 		List<ReviewCommentDto> comments = reviewCommentMapper.getCommentsByTripReviewId(map);
-		
+
 		for(ReviewCommentDto comment : comments) {
 			List<ReviewCommentDto> replies =  reviewCommentMapper.getRepliesByParentReviewCommentId(comment.getReviewCommentId());
 			comment.setReplies(replies);
 			comment.setReplyCnt(replies.size());
 		}
 		
+		
 		return comments;
+	}
+
+	@Override
+	public ReviewCommentDto writeComment(ReviewCommentDto comment) throws Exception {
+		reviewCommentMapper.writeComment(comment);
+		
+		ReviewCommentDto result = reviewCommentMapper.findById(comment.getReviewCommentId());
+		
+		return result;
+	}
+
+	@Override
+	public ReviewCommentDto writeCommentReply(ReviewCommentDto reply) throws Exception {
+		reviewCommentMapper.writeCommentReply(reply);
+		
+		ReviewCommentDto result = reviewCommentMapper.findById(reply.getReviewCommentId());
+
+		return result;
 	}
 
 }

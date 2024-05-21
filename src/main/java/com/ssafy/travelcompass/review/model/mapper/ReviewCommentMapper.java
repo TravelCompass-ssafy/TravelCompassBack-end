@@ -15,4 +15,10 @@ public interface ReviewCommentMapper {
 
 	public List<ReviewCommentDto> getRepliesByParentReviewCommentId(int reviewCommentId) throws SQLException;
 
+	public void writeComment(ReviewCommentDto comment) throws SQLException;
+
+	public ReviewCommentDto findById(int reviewCommentId) throws SQLException;
+
+	public void writeCommentReply(ReviewCommentDto reply) throws SQLException;
+
 }

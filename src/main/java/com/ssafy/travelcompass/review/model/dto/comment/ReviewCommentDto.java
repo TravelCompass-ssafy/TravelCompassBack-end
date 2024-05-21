@@ -4,15 +4,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ReviewCommentDto {
 	private int reviewCommentId;
 	private int tripReviewId;
@@ -21,7 +24,7 @@ public class ReviewCommentDto {
 	private String content;
 	private LocalDateTime createdAt;
 	
-	private String userName; // 작성자 이름
+	private String nickName; // 작성자 닉네임
 	private String profile; // 프로필 이미지 경로
 	
 	private List<ReviewCommentDto> replies;
