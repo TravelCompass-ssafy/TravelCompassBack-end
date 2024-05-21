@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public void isEmailExists(String email) throws Exception {
-		if(!authMapper.isEmailExists(email)) {
+		if(authMapper.isEmailExists(email)) {
 			throw new EmailExistsException();
 		}
 	}
@@ -136,7 +136,13 @@ public class AuthServiceImpl implements AuthService {
 		Map<String, String> map = new HashMap<>();
 		map.put("nickName", nickName);
 		map.put("birthDay", birthDay);
-		return authMapper.findEmail(map);
+		
+		String email = authMapper.findEmail(map);
+		if(email == null) {
+			throw new UserNotFoundException();
+		}
+		
+		return email;
 	}
 
 	@Override
