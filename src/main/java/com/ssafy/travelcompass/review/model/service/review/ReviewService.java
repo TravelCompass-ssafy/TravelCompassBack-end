@@ -11,4 +11,6 @@ public interface ReviewService {
 	void writeReview(RequestWriteReview requestWriteReview) throws Exception;
 
 	List<TripReviewDto> getReviews(int offset, int size, String keyword, String category) throws Exception;
+
+	List<TripReviewDto> getReviewsByTripDetailId(int tripDetailId) throws Exception;
 }

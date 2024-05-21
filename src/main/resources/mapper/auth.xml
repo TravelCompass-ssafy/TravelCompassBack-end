@@ -54,7 +54,7 @@
     </select>
     
     <select id="login" parameterType="UserDto" resultMap="user">
-    	SELECT user_id, password, username, refresh_token
+    	SELECT *
     	FROM user
     	WHERE email = #{email}
     </select>

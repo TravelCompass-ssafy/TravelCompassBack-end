@@ -60,6 +60,14 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
+	@GetMapping("{trip-detail-id}")
+	public ResponseEntity<?> getReviewsByTripDetailId(@PathVariable("trip-detail-id") int tripDetailId) throws Exception {
+		
+		List<TripReviewDto> result = reviewService.getReviewsByTripDetailId(tripDetailId);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
 	@GetMapping("{trip-review-id}/comment")
 	public ResponseEntity<?> getComments(@PathVariable("trip-review-id") int tripReviewId,
 										 @RequestParam("page") int page, 

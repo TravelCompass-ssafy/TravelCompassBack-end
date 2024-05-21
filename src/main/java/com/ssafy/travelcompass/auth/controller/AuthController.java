@@ -98,6 +98,7 @@ public class AuthController {
 				System.out.println(refreshToken);
 				authService.saveRefreshToken(loginUser.getUserId(), refreshToken);
 				
+				resultMap.put("userInfo", loginUser);
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);				
 				

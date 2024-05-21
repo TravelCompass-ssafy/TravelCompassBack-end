@@ -69,4 +69,10 @@
 		LIMIT #{offset}, #{size};
 	</select>
 	
+	<select id="getReviewsByTripDetailId" parameterType="int" resultMap="review">
+		SELECT * 
+		FROM trip_review
+		WHERE trip_detail_Id = #{tripDetailId};
+	</select>
+	
 </mapper>

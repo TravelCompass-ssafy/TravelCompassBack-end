@@ -85,4 +85,22 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return reviews;
 	}
+
+	@Override
+	public List<TripReviewDto> getReviewsByTripDetailId(int tripDetailId) throws Exception {
+		List<TripReviewDto> result =  reviewMapper.getReviewsByTripDetailId(tripDetailId);
+		
+		for(TripReviewDto review : result) {
+			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(review.getTripReviewId());
+			
+			List<String> imagePathList = images.stream()
+					.map(ReviewImageFileDto::getPath)
+					.collect(Collectors.toList());
+			
+			review.setReviewImageList(imagePathList);
+		}
+		
+		return result;
+	}
+
 }
