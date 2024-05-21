@@ -93,32 +93,39 @@ public class TripServiceImpl implements TripService {
 	public TripDetailDto getProceedTrip(int userId) {
 		TripDetailDto tripDetailDto = tripMapper.getProceedTrip(userId);
 		
-		int tripDetailId = tripDetailDto.getTripDetailId();
-		tripDetailDto.setMemberList(tripMapper.getTripMemberList(tripDetailId));
-		
-
-		List<TripPlanAttractionDto> tripPlanAttractionDto = tripMapper.getPlanAttractionList(tripDetailId);
-		List<List<TripPlanAttractionDto>> tripPlanAttractionList = new ArrayList<>();
-		
-		int planSize = 0;
-		int listIndex = 0;
-		
-		for (LocalDate l = tripDetailDto.getStartDate(); !l.isAfter(tripDetailDto.getEndDate()); l = l.plusDays(1)) {
-			tripPlanAttractionList.add(new ArrayList<>());
+		if (tripDetailDto != null) {
+			int tripDetailId = tripDetailDto.getTripDetailId();
+			tripDetailDto.setMemberList(tripMapper.getTripMemberList(tripDetailId));
 			
-			while (tripPlanAttractionDto.size() > planSize) {
-				if (!tripPlanAttractionDto.get(planSize).getTripDate().equals(l)) {
-					break;
+	
+			List<TripPlanAttractionDto> tripPlanAttractionDto = tripMapper.getPlanAttractionList(tripDetailId);
+			List<List<TripPlanAttractionDto>> tripPlanAttractionList = new ArrayList<>();
+			
+			int planSize = 0;
+			int listIndex = 0;
+			
+			for (LocalDate l = tripDetailDto.getStartDate(); !l.isAfter(tripDetailDto.getEndDate()); l = l.plusDays(1)) {
+				tripPlanAttractionList.add(new ArrayList<>());
+				
+				while (tripPlanAttractionDto.size() > planSize) {
+					if (!tripPlanAttractionDto.get(planSize).getTripDate().equals(l)) {
+						break;
+					}
+					
+					tripPlanAttractionList.get(listIndex).add(tripPlanAttractionDto.get(planSize++));
 				}
 				
-				tripPlanAttractionList.get(listIndex).add(tripPlanAttractionDto.get(planSize++));
+				listIndex++;
 			}
 			
-			listIndex++;
+			tripDetailDto.setTripPlanAttractionList(tripPlanAttractionList);
 		}
 		
-		tripDetailDto.setTripPlanAttractionList(tripPlanAttractionList);
-		
 		return tripDetailDto;
+	}
+
+	@Override
+	public List<TripDetailDto> getShareList(LocalDate date, int sidoCode, String keyword) {
+		return tripMapper.getShareList(date, sidoCode, keyword);
 	}
 }

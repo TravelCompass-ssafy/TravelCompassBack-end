@@ -81,7 +81,10 @@
 	        <if test="sidoCode != null and sidoCode != 0">
 	            and s1.sido_code = #{sidoCode}
 	        </if>
+	        and d1.start_date &gt; now()
 	    </where>
+	    order by
+	    	create_time
 	</select>
 	
 	<select id="getTripDetail" resultMap="TripDetailDto">
@@ -142,6 +145,46 @@
 			d1.user_id = #{userId}
 		and
 			d1.start_date &lt;= now() and d1.end_date &gt;= now()
+	</select>
+	
+	<select id="getShareList" resultMap="TripDetailDto">
+		select 
+			d1.trip_detail_id, 
+			u1.user_id, 
+			d1.image_path,
+			s1.sido_name, 
+			d1.title, 
+			d1.start_date, 
+			d1.end_date,
+			u1.nickname,
+			d1.max_capacity,
+			d1.view,
+			d1.created_at,
+			timestampdiff(minute, d1.created_at, now()) as create_time
+		from 
+			trip_detail d1
+		join
+			user u1
+		on
+			d1.user_id = u1.user_id
+		join
+			sido s1
+		on
+			d1.sido_code = s1.sido_code
+		<where>
+	        <if test="date != null">
+	            and d1.start_date &lt;= #{date} and d1.end_date &gt;= #{date}
+	        </if>
+	        <if test="keyword != null and keyword != ''">
+	            and d1.title like CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="sidoCode != null and sidoCode != 0">
+	            and s1.sido_code = #{sidoCode}
+	        </if>
+	        and d1.end_date &lt; now()
+	    </where>
+	    order by
+			create_time
 	</select>
 
 	<select id="getTripMemberList" resultMap="TripDetailMemberDto">

@@ -35,6 +35,11 @@ public class TripController {
 		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetailList(date, sidoCode, keyword));
 	}
 	
+	@GetMapping("/share")
+	public ResponseEntity<?> getShareList(@RequestParam(required = false) LocalDate date, @RequestParam(required = false) int sidoCode, @RequestParam(required = false) String keyword) {
+		return ResponseEntity.status(HttpStatus.OK).body(tripService.getShareList(date, sidoCode, keyword));
+	}
+	
 	@GetMapping("/{tripDetailId}")
 	public ResponseEntity<?> getTripDetail(@PathVariable int tripDetailId) {
 		return ResponseEntity.status(HttpStatus.OK).body(tripService.getTripDetail(tripDetailId));

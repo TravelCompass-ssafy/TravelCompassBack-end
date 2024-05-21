@@ -15,6 +15,7 @@ import com.ssafy.travelcompass.trip.model.dto.trip.TripDetailDto;
 @Mapper
 public interface TripMapper {
 	List<TripDetailDto> getTripDetailList(LocalDate date, int sidoCode, String keyword);
+	List<TripDetailDto> getShareList(LocalDate date, int sidoCode, String keyword);
 	TripDetailDto getTripDetail(int tripDetailId);
 	List<TripDetailMemberDto> getTripMemberList(int tripDetailId);
 	List<TripPlanAttractionDto> getPlanAttractionList(int tripDetailId);
