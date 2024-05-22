@@ -1,6 +1,7 @@
 package com.ssafy.travelcompass.trip.model.service.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -39,4 +40,18 @@ public class MemberServiceImpl implements MemberService {
 		
 		return member;
 	}
+
+	@Override
+	public List<TripDetailMemberDto> findByTripDetailId(int tripDetailId) throws Exception {
+		List<TripDetailMemberDto> members = null;
+		try {
+			members = memberMapper.findByTripDetailId(tripDetailId);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(members);
+		return members;
+	}
+
 }
