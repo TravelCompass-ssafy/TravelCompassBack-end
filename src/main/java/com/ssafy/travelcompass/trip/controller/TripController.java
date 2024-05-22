@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -56,6 +57,13 @@ public class TripController {
 		return ResponseEntity.status(HttpStatus.OK).body(proceedTrip);
 	}
 	
+	@DeleteMapping("/{tripDetailId}")
+	public ResponseEntity<?> deleteTripDetail(@PathVariable int tripDetailId) {
+		tripService.deleteTripDetail(tripDetailId);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> registTrip(@ModelAttribute TripDetailDto tripDetailDto) throws Exception {
 		tripDetailDto.convertJsonToList();
@@ -89,5 +97,13 @@ public class TripController {
 		memberService.regist(tripDetailMemberDto);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> updateTripDetail(@RequestBody TripDetailDto tripDetailDto) {
+		System.out.println(tripDetailDto);
+		tripService.updateTripDetail(tripDetailDto);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

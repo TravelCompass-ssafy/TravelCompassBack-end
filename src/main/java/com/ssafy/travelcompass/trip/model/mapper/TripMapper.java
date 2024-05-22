@@ -27,4 +27,7 @@ public interface TripMapper {
 	void registTripDetail(TripDetailDto tripDetailDto);
 	void registTripDetailPlan(TripPlanDto tripPlanDto);
 	void registTripActivity(TripActivityDto tripActivityDto);
+	
+	void updateTripDetail(TripDetailDto tripDetailDto);
+	void deleteTripDetail(int tripDetailId);
 }

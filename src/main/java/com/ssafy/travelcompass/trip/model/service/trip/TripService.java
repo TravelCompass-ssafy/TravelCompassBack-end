@@ -16,4 +16,6 @@ public interface TripService {
 	boolean getDuplicationTripId(int userId, LocalDate startDate, LocalDate endDate);
 	TripDetailDto getProceedTrip(int userId);
 	void upCountViewI(int tripDetailId);
+	void deleteTripDetail(int tripDetailId);
+	void updateTripDetail(TripDetailDto tripDetailDto);
 }

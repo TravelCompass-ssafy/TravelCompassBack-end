@@ -140,4 +140,14 @@ public class TripServiceImpl implements TripService {
 	public void upCountViewI(int tripDetailId) {
 		tripMapper.upCountView(tripDetailId);
 	}
+
+	@Override
+	public void deleteTripDetail(int tripDetailId) {
+		tripMapper.deleteTripDetail(tripDetailId);
+	}
+
+	@Override
+	public void updateTripDetail(TripDetailDto tripDetailDto) {
+		tripMapper.updateTripDetail(tripDetailDto);
+	}
 }

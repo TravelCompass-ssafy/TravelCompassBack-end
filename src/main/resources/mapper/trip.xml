@@ -270,4 +270,22 @@
 			trip_detail_id = #{tripDetailId};
 	</update>
 	
+	<update id="updateTripDetail" parameterType="TripDetailDto">
+		update
+			trip_detail
+		set
+			title = #{title},
+		    content = #{content}
+		where 
+			trip_detail_id = #{tripDetailId}
+	</update>
+	
+	<delete id="deleteTripDetail">
+		delete
+		from
+			trip_detail
+		where
+			trip_detail_id = #{tripDetailId}
+	</delete>
+	
 </mapper>
