@@ -8,8 +8,10 @@ public interface MemberService {
 
 	void regist(TripDetailMemberDto tripDetailMemberDto) throws Exception;
 
-	TripDetailMemberDto findByUserId(int userId) throws Exception;
+	List<TripDetailMemberDto> findByUserId(int userId) throws Exception;
 
 	List<TripDetailMemberDto> findByTripDetailId(int tripDetailId) throws Exception;
+
+	TripDetailMemberDto findByIdAndUserId(int tripDetailId, int userId) throws Exception;
 
 }

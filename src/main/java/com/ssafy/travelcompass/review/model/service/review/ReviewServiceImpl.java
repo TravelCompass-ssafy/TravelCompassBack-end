@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Override
 	public void writeReview(RequestWriteReview  requestWriteReview) throws Exception {
-		TripDetailMemberDto member = memberService.findByUserId(requestWriteReview.getUserId());
+		TripDetailMemberDto member = memberService.findByIdAndUserId(requestWriteReview.getTripDetailId(), requestWriteReview.getUserId());
 		if(member == null) {
 			throw new isNotMemberException();
 		}
@@ -130,6 +130,30 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return result;
 	}
+	
+	@Override
+	public List<TripReviewDto> getReviewsByUserId(int userId) throws Exception {
+		List<TripReviewDto> result = reviewMapper.getReviewsByUserId(userId);
+		
+		for(TripReviewDto review : result) {
+			int tripReviewId = review.getTripReviewId();
+			
+			List<ReviewTagDto> tags = reviewTagService.findByTripReviewId(tripReviewId);
+			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(tripReviewId);			
+			List<String> tagList = tags.stream()
+							            .map(ReviewTagDto::getTag)
+							            .collect(Collectors.toList());
+			
+			List<String> imagePathList = images.stream()
+												.map(ReviewImageFileDto::getPath)
+												.collect(Collectors.toList());
+			
+			review.setReviewTagList(tagList);
+			review.setReviewImageList(imagePathList);
+		}
+		
+		return result;
+	}
 
 	@Override
 	public TripReviewDto getReviewById(int tripReviewId) throws Exception {
@@ -176,8 +200,6 @@ public class ReviewServiceImpl implements ReviewService {
 			throw new UnAuthorizedException();
 		}
 		
-	}
-
-	
+	}	
 
 }

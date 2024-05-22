@@ -25,6 +25,13 @@
 		WHERE user_id = #{userId}
 	</select>
 	
+	<select id="findByIdAndUserId" parameterType="map" resultMap="member">
+		SELECT *
+		FROM trip_detail_member
+		WHERE user_id = #{userId}
+		AND trip_detail_id = #{tripDetailId}
+	</select>
+	
 	
 	<insert id="regist" parameterType="TripDetailMemberDto">
 		INSERT INTO trip_detail_member (user_id, trip_detail_id)

@@ -19,4 +19,6 @@ public interface ReviewService {
 	void deleteReview(int userId, int tripReviewId) throws Exception;
 
 	void updateReview(RequestWriteReview requestUpdateReview) throws Exception;
+
+	List<TripReviewDto> getReviewsByUserId(int userId) throws Exception;
 }

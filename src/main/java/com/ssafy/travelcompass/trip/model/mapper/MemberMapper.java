@@ -15,10 +15,12 @@ public interface MemberMapper {
 
 	void regist(TripDetailMemberDto tripDetailMemberDto) throws SQLException;
 
-	TripDetailMemberDto findByUserId(int userId) throws SQLException;
+	List<TripDetailMemberDto> findByUserId(int userId) throws SQLException;
 
 	boolean isMemberExistsByUserIdAndTripDetailId(Map<String, Object> map) throws SQLException;
 
 	List<TripDetailMemberDto> findByTripDetailId(int tripDetailId) throws SQLException;
+
+	TripDetailMemberDto findByIdAndUserId(Map<String, Object> map)throws SQLException;
 
 }

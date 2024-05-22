@@ -35,8 +35,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public TripDetailMemberDto findByUserId(int userId) throws Exception {
-		TripDetailMemberDto member = memberMapper.findByUserId(userId);
+	public List<TripDetailMemberDto> findByUserId(int userId) throws Exception {
+		List<TripDetailMemberDto> member = memberMapper.findByUserId(userId);
 		
 		return member;
 	}
@@ -52,6 +52,16 @@ public class MemberServiceImpl implements MemberService {
 		
 		System.out.println(members);
 		return members;
+	}
+
+	@Override
+	public TripDetailMemberDto findByIdAndUserId(int tripDetailId, int userId) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("tripDetailId", tripDetailId);
+		map.put("userId", userId);
+		TripDetailMemberDto member = memberMapper.findByIdAndUserId(map);
+		
+		return member;
 	}
 
 }

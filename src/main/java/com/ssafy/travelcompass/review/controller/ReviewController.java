@@ -83,6 +83,13 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
+	@GetMapping("/user/{user-id}")
+	public ResponseEntity<?> getReviewsByUserId(@PathVariable("user-id") int userId) throws Exception {
+		List<TripReviewDto> result = reviewService.getReviewsByUserId(userId);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
 	@GetMapping("/trip/{trip-detail-id}")
 	public ResponseEntity<?> getReviewsByTripDetailId(@PathVariable("trip-detail-id") int tripDetailId) throws Exception {
 		

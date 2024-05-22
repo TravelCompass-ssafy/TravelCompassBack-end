@@ -23,4 +23,6 @@ public interface ReviewMapper {
 	void deleteReviewById(int tripReviewId) throws SQLException;
 
 	void updateReviewById(TripReviewDto tripReviewDto) throws SQLException;
+
+	List<TripReviewDto> getReviewsByUserId(int userId) throws SQLException;
 }

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import com.ssafy.travelcompass.alarm.model.dto.RequestJoinTrip;
 import com.ssafy.travelcompass.alarm.model.repository.EmitterRepository;
 import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 import com.ssafy.travelcompass.trip.model.service.member.MemberService;
