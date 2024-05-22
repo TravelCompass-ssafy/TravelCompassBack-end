@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.travelcompass.exception.custom.UnAuthorizedException;
 import com.ssafy.travelcompass.exception.custom.isNotMemberException;
 import com.ssafy.travelcompass.review.model.dto.image.ReviewImageFileDto;
 import com.ssafy.travelcompass.review.model.dto.review.RequestWriteReview;
@@ -21,7 +22,9 @@ import com.ssafy.travelcompass.trip.model.dto.member.TripDetailMemberDto;
 import com.ssafy.travelcompass.trip.model.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -51,6 +54,21 @@ public class ReviewServiceImpl implements ReviewService {
 			reviewImageFileService.saveImage(tripReviewDto.getTripReviewId(), requestWriteReview.getReviewImageList());
 			
 		}
+	}
+	
+	@Override
+	public void updateReview(RequestWriteReview requestUpdateReview) throws Exception {
+		isValid(requestUpdateReview.getTripReviewId(), requestUpdateReview.getUserId());
+		
+		TripReviewDto tripReviewDto = new TripReviewDto();
+		tripReviewDto.setTripReviewId(requestUpdateReview.getTripReviewId());
+		tripReviewDto.setContent(requestUpdateReview.getContent());
+		tripReviewDto.setStar(requestUpdateReview.getStar());
+		
+		reviewMapper.updateReviewById(tripReviewDto);
+		reviewTagService.updateTagListByReviewId(requestUpdateReview.getTripReviewId(), requestUpdateReview.getReviewTagList());
+		reviewImageFileService.updateImage(requestUpdateReview.getTripReviewId(), requestUpdateReview.getReviewImageList());
+		
 	}
 
 	@Override
@@ -91,16 +109,75 @@ public class ReviewServiceImpl implements ReviewService {
 		List<TripReviewDto> result =  reviewMapper.getReviewsByTripDetailId(tripDetailId);
 		
 		for(TripReviewDto review : result) {
-			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(review.getTripReviewId());
+			int tripReviewId = review.getTripReviewId();
+			
+			List<ReviewTagDto> tags = reviewTagService.findByTripReviewId(tripReviewId);
+			List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(tripReviewId);
+			boolean isLiked = reviewLikeService.isLiked(review.getTripReviewId(), review.getUserId());
+			
+			List<String> tagList = tags.stream()
+							            .map(ReviewTagDto::getTag)
+							            .collect(Collectors.toList());
 			
 			List<String> imagePathList = images.stream()
-					.map(ReviewImageFileDto::getPath)
-					.collect(Collectors.toList());
+												.map(ReviewImageFileDto::getPath)
+												.collect(Collectors.toList());
 			
+			review.setReviewTagList(tagList);
 			review.setReviewImageList(imagePathList);
+			review.setLikeCheck(isLiked);
 		}
 		
 		return result;
 	}
+
+	@Override
+	public TripReviewDto getReviewById(int tripReviewId) throws Exception {
+		TripReviewDto result = reviewMapper.findById(tripReviewId);
+		
+		List<ReviewTagDto> tags = reviewTagService.findByTripReviewId(tripReviewId);
+		List<ReviewImageFileDto> images = reviewImageFileService.findByTripReviewId(tripReviewId);
+		
+		List<String> tagList = tags.stream()
+						            .map(ReviewTagDto::getTag)
+						            .collect(Collectors.toList());
+		
+		List<String> imagePathList = images.stream()
+											.map(ReviewImageFileDto::getPath)
+											.collect(Collectors.toList());
+		
+		result.setReviewTagList(tagList);
+		result.setReviewImageList(imagePathList);
+		
+		return result;
+	}
+
+	@Override
+	public void deleteReview(int userId, int tripReviewId) throws Exception {
+		isValid(tripReviewId, userId);
+		
+		reviewImageFileService.deleteReviewImageByReviewId(tripReviewId);
+		
+		reviewMapper.deleteReviewById(tripReviewId);
+		
+	}
+	
+	public void isValid(int tripReviewId, int userId) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("tripReviewId", tripReviewId);
+		map.put("userId", userId);
+		
+		log.info(tripReviewId + ", " + userId);
+		
+		boolean isValid = reviewMapper.isValid(map);
+		
+		if(!isValid) {
+			log.info("아아우우");
+			throw new UnAuthorizedException();
+		}
+		
+	}
+
+	
 
 }

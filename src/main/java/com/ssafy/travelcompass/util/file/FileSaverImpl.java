@@ -116,4 +116,22 @@ public class FileSaverImpl implements FileSaver {
 	}
 
 
+	@Override
+	public void reviewImageRemove(List<String> reviewImagePathList) {
+		if(reviewImagePathList == null) return;
+		for(String reviewImagePath: reviewImagePathList) {
+			if (reviewImagePath.startsWith("/images/")) {
+				reviewImagePath = reviewImagePath.substring("/images/".length());
+	        }
+	        
+	        Path filePath = Paths.get(uploadDir, reviewImagePath);
+	        File file = filePath.toFile();
+	        
+	        if(file.exists()) {
+	        	file.delete();
+	        }
+		}
+	}
+
+
 }

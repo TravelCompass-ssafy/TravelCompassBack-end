@@ -15,4 +15,6 @@ public interface ReviewImageFileMapper {
 
 	List<ReviewImageFileDto> findByTripReviewId(int tripReviewId) throws SQLException;
 
+	void deleteByReviewId(int tripReviewId) throws SQLException;
+
 }

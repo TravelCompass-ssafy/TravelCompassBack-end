@@ -70,9 +70,72 @@
 	</select>
 	
 	<select id="getReviewsByTripDetailId" parameterType="int" resultMap="review">
-		SELECT * 
-		FROM trip_review
-		WHERE trip_detail_Id = #{tripDetailId};
+		SELECT 
+			trip_review_id, 
+		    tr.user_id as user_id, 
+		    content_id, 
+		    tr.content as content, 
+		    star, 
+		    tr.created_at as created_at, 
+		    nickname,
+		    profile,
+    		title as attraction_title,
+		    COALESCE(l.like_count, 0) AS like_count,
+		    COALESCE(c.comment_count, 0) AS comment_count
+		FROM trip_review tr
+		LEFT JOIN user USING(user_id)
+		LEFT JOIN attraction_info USING(content_id)
+		LEFT JOIN (
+			SELECT 
+				trip_review_id,
+		        COUNT(*) AS like_count
+			FROM
+				review_like
+			GROUP BY trip_review_id
+		) l USING(trip_review_id)
+		LEFT JOIN (
+			SELECT
+				trip_review_id,
+				COUNT(*) AS comment_count
+			FROM 
+				review_comment
+			GROUP BY
+				trip_review_id
+		) c USING(trip_review_id)
+		WHERE trip_detail_Id = #{tripDetailId}
+		ORDER BY created_at DESC;
 	</select>
+	
+	<select id="findById" parameterType="int" resultMap="review">
+		SELECT 
+			trip_review_id, 
+		    content_id, 
+		    tr.content as content, 
+		    star, 
+    		title as attraction_title
+		FROM trip_review tr
+		LEFT JOIN user USING(user_id)
+		LEFT JOIN attraction_info USING(content_id)
+		WHERE trip_review_id = #{tripReviewId}
+	</select>
+	
+	<select id="isValid" parameterType="map" resultType="boolean">
+		SELECT 
+			count(*) count
+		FROM trip_review
+		WHERE trip_review_id = #{tripReviewId} AND user_id = #{userId}
+	</select>
+	
+	<delete id="deleteReviewById" parameterType="int">
+		DELETE 
+		FROM trip_review
+		WHERE trip_review_id = #{tripReviewId}
+	</delete>
+	
+	<update id="updateReviewById" parameterType="TripReviewDto">
+		UPDATE trip_review
+		SET content = #{content}, star = #{star}
+		WHERE trip_review_id = #{tripReviewId}
+	</update>
 	
 </mapper>

@@ -10,4 +10,6 @@ public interface ReviewTagService {
 
 	List<ReviewTagDto> findByTripReviewId(int tripReviewId) throws Exception;
 
+	void updateTagListByReviewId(int tripReviewId, List<String> reviewTagList) throws Exception;
+
 }

@@ -15,4 +15,6 @@ public interface ReviewTagMapper {
 
 	List<ReviewTagDto> findByTripReviewId(int tripReviewId) throws SQLException;
 
+	void deleteTagsByReviewId(int tripReviewId) throws SQLException;
+
 }

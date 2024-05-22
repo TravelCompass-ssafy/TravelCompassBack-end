@@ -16,4 +16,11 @@ public interface ReviewMapper {
 
 	List<TripReviewDto> getReviewsByTripDetailId(int tripDetailId) throws SQLException;
 
+	TripReviewDto findById(int tripReviewId) throws SQLException;
+
+	boolean isValid(Map<String, Object> map) throws SQLException;
+
+	void deleteReviewById(int tripReviewId) throws SQLException;
+
+	void updateReviewById(TripReviewDto tripReviewDto) throws SQLException;
 }

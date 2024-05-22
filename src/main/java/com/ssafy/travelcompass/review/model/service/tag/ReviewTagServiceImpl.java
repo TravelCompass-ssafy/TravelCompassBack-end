@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.travelcompass.review.model.dto.tag.ReviewTagDto;
-import com.ssafy.travelcompass.review.model.mapper.ReviewMapper;
 import com.ssafy.travelcompass.review.model.mapper.ReviewTagMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +35,13 @@ public class ReviewTagServiceImpl implements ReviewTagService {
 	public List<ReviewTagDto> findByTripReviewId(int tripReviewId) throws Exception {
 		List<ReviewTagDto> tags = reviewTagMapper.findByTripReviewId(tripReviewId);
 		return tags;
+	}
+
+	@Override
+	public void updateTagListByReviewId(int tripReviewId, List<String> reviewTagList) throws Exception {
+		reviewTagMapper.deleteTagsByReviewId(tripReviewId);
+		
+		addTagListByReviewId(tripReviewId, reviewTagList);
 	}
 
 }

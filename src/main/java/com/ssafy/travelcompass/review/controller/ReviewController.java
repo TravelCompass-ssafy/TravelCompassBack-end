@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +50,19 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();	
 	}
 	
+	@PutMapping("{trip-review-id}")
+	public ResponseEntity<?> updateReview(@PathVariable("trip-review-id") int tripReviewId,
+										 @ModelAttribute RequestWriteReview requestUpdateReview,
+										 HttpServletRequest request) throws Exception {
+		int userId = jwtUtil.getUserId(request.getHeader("Authorization"));
+		requestUpdateReview.setUserId(userId);
+		requestUpdateReview.setTripReviewId(tripReviewId);
+		
+		reviewService.updateReview(requestUpdateReview);
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+	
 	@GetMapping
 	public ResponseEntity<?> getReviews(@RequestParam("page") int page, 
 										@RequestParam("size") int size,
@@ -60,7 +75,15 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 	
-	@GetMapping("{trip-detail-id}")
+	@GetMapping("{trip-review-id}")
+	public ResponseEntity<?> getReviewById(@PathVariable("trip-review-id") int tripReviewId) throws Exception {
+		
+		TripReviewDto result = reviewService.getReviewById(tripReviewId);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
+	@GetMapping("/trip/{trip-detail-id}")
 	public ResponseEntity<?> getReviewsByTripDetailId(@PathVariable("trip-detail-id") int tripDetailId) throws Exception {
 		
 		List<TripReviewDto> result = reviewService.getReviewsByTripDetailId(tripDetailId);
@@ -130,4 +153,16 @@ public class ReviewController {
 		
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+	
+	@DeleteMapping("{trip-review-id}")
+	public ResponseEntity<?> deleteReview(@PathVariable("trip-review-id") int tripReviewId,
+										  HttpServletRequest request) throws Exception {
+		int userId = jwtUtil.getUserId(request.getHeader("Authorization"));
+		
+		reviewService.deleteReview(userId, tripReviewId);
+		
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	
 }

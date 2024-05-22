@@ -21,4 +21,10 @@
 		WHERE trip_review_id = #{tripReviewId}
 	</select>
 	
+	<delete id="deleteTagsByReviewId" parameterType="int">
+		DELETE
+		FROM review_tag
+		WHERE trip_review_id = #{tripReviewId}
+	</delete>
+	
 </mapper>
