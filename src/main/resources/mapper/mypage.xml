@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.mypage.model.mapper.MypageMapper">
+
+	<resultMap type="MypagePlanDto" id="MypagePlanDto">
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="image_path" property="imagePath"/>
+	</resultMap>
+
+	<resultMap type="MypageTripDto" id="MypageTripDto">
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="image_path" property="imagePath"/>
+	</resultMap>
+	
+	<select id="getMypagePlan" resultMap="MypagePlanDto">
+		select
+			image_path,
+		    trip_detail_id,
+		    title
+		from
+			trip_detail
+		where
+			user_id = 14
+		and
+			end_date &lt; curdate()
+		order by
+			created_at desc
+	</select>
+
+	<select id="getMypageTrip" resultMap="MypagePlanDto">
+		select
+			image_path,
+		    trip_detail_id,
+		    title
+		from
+			trip_detail
+		where
+			user_id = 14
+		and
+			start_date &gt; curdate()	
+		order by
+			created_at desc
+	</select>
+	
+</mapper>
