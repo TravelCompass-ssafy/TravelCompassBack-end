@@ -81,7 +81,7 @@
 	        <if test="sidoCode != null and sidoCode != 0">
 	            and s1.sido_code = #{sidoCode}
 	        </if>
-	        and d1.start_date &gt; now()
+	        and d1.start_date &gt; curdate()
 	    </where>
 	    order by
 	    	create_time
@@ -144,7 +144,7 @@
 		where
 			d1.user_id = #{userId}
 		and
-			d1.start_date &lt;= now() and d1.end_date &gt;= now()
+			d1.start_date &lt;= curdate() and d1.end_date &gt;= curdate()
 	</select>
 	
 	<select id="getShareList" resultMap="TripDetailDto">
@@ -181,7 +181,7 @@
 	        <if test="sidoCode != null and sidoCode != 0">
 	            and s1.sido_code = #{sidoCode}
 	        </if>
-	        and d1.end_date &lt; now()
+	        and d1.end_date &lt; curdate()
 	    </where>
 	    order by
 			create_time
