@@ -52,7 +52,7 @@ public class TripController {
 	@GetMapping("/proceed/{userId}")
 	public ResponseEntity<?> getProceedTrip(@PathVariable int userId) {
 		TripDetailDto proceedTrip = tripService.getProceedTrip(userId);
-		System.out.println(proceedTrip);
+
 		return ResponseEntity.status(HttpStatus.OK).body(proceedTrip);
 	}
 	
