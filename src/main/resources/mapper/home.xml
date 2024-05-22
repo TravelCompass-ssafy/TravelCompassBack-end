@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.travelcompass.home.model.mapper.HomeMapper">
+	<resultMap type="BestPlanViewDto" id="BestPlanViewDto">
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="sido_name" property="sidoName"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="max_capacity" property="maxCapacity"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="created_time" property="createdTime"/>
+	</resultMap>
+	
+	<resultMap type="RecentTripDto" id="RecentTripDto">
+		<result column="trip_detail_id" property="tripDetailId"/>
+		<result column="image_path" property="imagePath"/>
+		<result column="sido_name" property="sidoName"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="max_capacity" property="maxCapacity"/>
+		<result column="created_at" property="createdAt"/>
+		<result column="created_time" property="createdTime"/>
+	</resultMap>
+	
+	<select id="getBestPlanView" resultMap="BestPlanViewDto">
+		select
+			d1.trip_detail_id,
+		    d1.image_path,
+		    s1.sido_name,
+		    d1.title,
+		    d1.start_date,
+		    d1.end_date,
+		    u1.nickname,
+		    d1.max_capacity,
+		    d1.view,
+		    d1.created_at,
+		    timestampdiff(minute, d1.created_at, now()) as created_time
+		from
+			trip_detail d1
+		join
+			sido s1
+		on
+			d1.sido_code = s1.sido_code
+		join
+			user u1
+		on
+			d1.user_id = u1.user_id
+		where
+			d1.end_date &lt; now()
+		order by
+			d1.view desc
+		limit
+			3
+	</select>
+		
+	<select id="getRecentTrip" resultMap="RecentTripDto">
+		select
+			d1.trip_detail_id,
+		    d1.image_path,
+		    s1.sido_name,
+		    d1.title,
+		    d1.start_date,
+		    d1.end_date,
+		    u1.nickname,
+		    d1.max_capacity,
+		    d1.view,
+		    d1.created_at,
+		    timestampdiff(minute, d1.created_at, now()) as created_time
+		from
+			trip_detail d1
+		join
+			sido s1
+		on
+			d1.sido_code = s1.sido_code
+		join
+			user u1
+		on
+			d1.user_id = u1.user_id
+		where
+			d1.start_date &gt; now()
+		order by
+			d1.created_at desc
+		limit
+			3
+	</select>
+	
+</mapper>
