@@ -48,11 +48,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 	
 	private void sendToTripMembers(int tripDetailId) throws Exception {
-		System.out.println("아아아" + tripDetailId);
 		List<TripDetailMemberDto> members =  memberService.findByTripDetailId(tripDetailId);
 		
 		for(TripDetailMemberDto member : members) {
-			System.out.println("후후후:" + member.getUserId());
 			log.info("userId: " + member.getUserId());
 			SseEmitter emitter = emitterRepository.get(member.getUserId());
 			if(emitter != null) {

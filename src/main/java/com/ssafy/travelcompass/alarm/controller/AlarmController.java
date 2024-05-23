@@ -30,7 +30,6 @@ public class AlarmController {
 	
 	@PostMapping("/joinTrip/trip/{trip-detail-id}")
 	public void notifyJoinTrip(@PathVariable("trip-detail-id") int tripDetailId) throws Exception {
-		System.out.println("우우우:" + tripDetailId);
 		notificationService.notifyJoinTrip(tripDetailId);
 	}
 }

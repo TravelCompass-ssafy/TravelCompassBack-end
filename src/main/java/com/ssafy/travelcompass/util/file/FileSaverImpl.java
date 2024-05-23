@@ -41,16 +41,16 @@ public class FileSaverImpl implements FileSaver {
 				
 		file.transferTo(savedFile);
 		
-		return "/images/profile/" + today + "/" + newFileName;
+		return "/img/profile/" + today + "/" + newFileName;
 	}
 	
 
 	@Override
 	public void profileRemove(String profilePath) {
-		if(profilePath == null || profilePath.equals("/images/profile/basicProfile.jpg")) return;
+		if(profilePath == null || profilePath.equals("/img/profile/basicProfile.jpg")) return;
 		// /images/ 경로 제거
-        if (profilePath.startsWith("/images/")) {
-        	profilePath = profilePath.substring("/images/".length());
+        if (profilePath.startsWith("/img/")) {
+        	profilePath = profilePath.substring("/img/".length());
         }
         
         Path filePath = Paths.get(uploadDir, profilePath);
@@ -83,7 +83,7 @@ public class FileSaverImpl implements FileSaver {
 			
 			file.transferTo(savedFile);
 			
-			imagePaths.add("/images/review/" + today + "/" + newFileName);
+			imagePaths.add("/img/review/" + today + "/" + newFileName);
 	    }
 		
 		return imagePaths;
@@ -111,7 +111,7 @@ public class FileSaverImpl implements FileSaver {
 				
 		image.transferTo(savedFile);
 		
-		return "/images/trip/" + today + "/" + newFileName;
+		return "/img/trip/" + today + "/" + newFileName;
 		
 	}
 
@@ -120,8 +120,8 @@ public class FileSaverImpl implements FileSaver {
 	public void reviewImageRemove(List<String> reviewImagePathList) {
 		if(reviewImagePathList == null) return;
 		for(String reviewImagePath: reviewImagePathList) {
-			if (reviewImagePath.startsWith("/images/")) {
-				reviewImagePath = reviewImagePath.substring("/images/".length());
+			if (reviewImagePath.startsWith("/img/")) {
+				reviewImagePath = reviewImagePath.substring("/img/".length());
 	        }
 	        
 	        Path filePath = Paths.get(uploadDir, reviewImagePath);
